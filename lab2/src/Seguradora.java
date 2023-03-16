@@ -1,10 +1,12 @@
 
 public class Seguradora {
+    
     private String nome;
     private String telefone;
     private String email;
     private String endereco;
     
+    // construtor
     public Seguradora(String nome, String telefone, String email, String endereco) {
         this.nome = nome;
         this.telefone = telefone;
@@ -12,6 +14,7 @@ public class Seguradora {
         this.endereco = endereco;
     }
 
+    // getters e setters
     public String getNome() {
         return nome;
     }

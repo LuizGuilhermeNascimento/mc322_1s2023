@@ -1,18 +1,24 @@
 public class Cliente {
+    
     private String nome;
     private String cpf;
     private String dataNascimento;
     private int idade;
-    private int endereco;
+    private String endereco;
 
-    public Cliente(String nome, String cpf, String dataNascimento, int idade, int endereco) {
+    // construtor
+    public Cliente(String nome, String cpf, String dataNascimento, int idade, String endereco) {
         this.nome = nome;
-        this.cpf = cpf;
+        if (validarCPF(cpf)) {
+            this.cpf = cpf;
+        }
+        
         this.dataNascimento = dataNascimento;
         this.idade = idade;
         this.endereco = endereco;
     }
 
+    // getters e setters
     public String getNome() {
         return nome;
     }
@@ -29,7 +35,7 @@ public class Cliente {
         return idade;
     }
 
-    public int getEndereco() {
+    public String getEndereco() {
         return endereco;
     }
 
@@ -49,34 +55,43 @@ public class Cliente {
         this.idade = idade;
     }
 
-    public void setEndereco(int endereco) {
+    public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
     
+    // recebe um cpf na forma de String e calcula seus dígitos verificadores
     private int calcularDigitosVerificadores(String c) {
+
         int dig1 = 0;
         int dig2 = 0;
         int acc = 0;
 
-        for (int i = 0; i < 10; i++) {
-            int dig_cpf = Integer.parseInt(c.substring(i));
+        // cálculo do primeiro dígito
+        for (int i = 0; i < 9; i++) {
+            int dig_cpf = Integer.parseInt(c.substring(i,i+1));
             acc += dig_cpf*(10-i);
         }
         dig1 = 11 - (acc % 11);
+
+        // cálculo do segundo dígito
         acc = 0;
         for (int i = 0; i < 10; i++) {
-            int dig_cpf = Integer.parseInt(c.substring(i));
+            int dig_cpf = Integer.parseInt(c.substring(i,i+1));
             acc += dig_cpf*(11-i);
         }
+        dig2 = 11 - (acc % 11);
+        if (dig1 >= 10) { dig1 = 0; }
+        if (dig2 >= 10) { dig2 = 0; }
 
         return (dig1*10)+dig2;
     }
 
-    private boolean validarCPF() {
+    // recebe um cpf e retorna um booleano indicando se o CPF é válido
+    private boolean validarCPF(String c) {
 
-        String c = this.cpf;
-        String regex = "/./-";
+        String regex = "[^0-9]";
         c = c.replaceAll(regex, "");
+
         // verifica se o cpf possui 11 dígitos
         if (c.length() != 11) {
             return false;
@@ -90,8 +105,8 @@ public class Cliente {
         }
         if (allEquals) { return false; }
 
+        // verifica se os dígitos verificadores estão corretos
         int digitosVerif = calcularDigitosVerificadores(c);
-
         if (Integer.parseInt(c.substring(9)) != digitosVerif) {
             return false;
         }

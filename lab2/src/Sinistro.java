@@ -1,10 +1,12 @@
 import java.util.Random;
 
 public class Sinistro {
+    
     private int id;
     private String data;
     private String endereco;
 
+    // construtor
     public Sinistro(String data, String endereco) {
 
         this.id = gerarId();
@@ -15,9 +17,10 @@ public class Sinistro {
     // Função geradora de ID's
     private int gerarId() {
         Random r = new Random();
-        return r.nextInt(1000000);
+        return (r.nextInt(1000) * r.nextInt(1000));
     }
 
+    // getters e setters
     public int getId() {
         return id;
     }
