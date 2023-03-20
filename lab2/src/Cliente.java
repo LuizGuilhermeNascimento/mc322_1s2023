@@ -12,7 +12,6 @@ public class Cliente {
         if (validarCPF(cpf)) {
             this.cpf = cpf;
         }
-        
         this.dataNascimento = dataNascimento;
         this.idade = idade;
         this.endereco = endereco;
@@ -112,5 +111,11 @@ public class Cliente {
         }
 
         return true;
+    }
+
+    public String toString() {
+        String clienteString = "Nome: " + this.nome + "\nCPF: " + this.cpf + "\nData de Nascimento: " + this.dataNascimento +
+                                "\nIdade: " + this.idade + "\nEndereço: " + this.endereco;
+        return clienteString;
     }
 }
