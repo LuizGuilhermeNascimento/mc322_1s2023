@@ -87,7 +87,7 @@ public class Cliente {
     }
 
     // recebe um cpf e retorna um booleano indicando se o CPF é válido
-    private boolean validarCPF(String c) {
+    public boolean validarCPF(String c) {
 
         String regex = "[^0-9]";
         c = c.replaceAll(regex, "");

@@ -15,7 +15,7 @@ public class Sinistro {
     }
 
     // Função geradora de ID's
-    private int gerarId() {
+    public int gerarId() {
         Random r = new Random();
         return (r.nextInt(1000) * r.nextInt(1000));
     }
