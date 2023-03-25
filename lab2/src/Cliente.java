@@ -11,6 +11,8 @@ public class Cliente {
         this.nome = nome;
         if (validarCPF(cpf)) {
             this.cpf = cpf;
+        } else {
+            this.cpf = "CPF inválido";
         }
         this.dataNascimento = dataNascimento;
         this.idade = idade;

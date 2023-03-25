@@ -9,7 +9,7 @@ public class Main {
         Seguradora seguradora = new Seguradora("nome_seguradora", "(11)01234-5678", "emailficticio@gmail.com", "Rua Jose Freire");
 
         // Testes das funções
-        System.out.println("TESTE DA FUNÇÃO validarCPF()");
+        System.out.println("\nTESTE DA FUNÇÃO validarCPF()");
         System.out.println("Para o CPF 000.000.000-00: " + cliente.validarCPF("000.000.000-00"));
         System.out.println("Para o CPF 435.102.440-28: " + cliente.validarCPF("435.102.440-28"));
 
@@ -18,6 +18,8 @@ public class Main {
         System.out.println("Antes do setNome(): " + cliente.getNome());
         cliente.setNome("nome alterado");
         System.out.println("Depois do setNome(): " + cliente.getNome());
+        System.out.println("\nTESTE DA FUNÇÃO toString():");
+        System.out.println(cliente.toString());
 
         System.out.println("\n--------------------------------------------------------------------\n");
         System.out.println("GETTERS E SETTERS DA CLASSE SINISTRO");
