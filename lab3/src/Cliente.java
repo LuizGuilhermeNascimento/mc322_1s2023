@@ -1,35 +1,21 @@
-import java.util.Date;
 import java.util.List;
 
 public class Cliente {
     
-    private String nome;
-    private String endereco;
-    private Date dataLicenca;
-    private String educacao;
-    private String genero;
-    private String classeEconomica;
+    protected String nome;
+    protected String endereco;
+    
     private List<Veiculo> listaVeiculos;
 
     // construtor
-    public Cliente(String nome, String endereco, Date dataLicenca, String educacao, String genero,
-            String classeEconomica) {
+    public Cliente(String nome, String endereco) {
         this.nome = nome;
         this.endereco = endereco;
-        this.dataLicenca = dataLicenca;
-        this.educacao = educacao;
-        this.genero = genero;
-        this.classeEconomica = classeEconomica;
     }
 
-    public Cliente(String nome, String endereco, Date dataLicenca, String educacao, String genero,
-            String classeEconomica, List<Veiculo> listaVeiculos) {
+    public Cliente(String nome, String endereco, List<Veiculo> listaVeiculos) {
         this.nome = nome;
         this.endereco = endereco;
-        this.dataLicenca = dataLicenca;
-        this.educacao = educacao;
-        this.genero = genero;
-        this.classeEconomica = classeEconomica;
         this.listaVeiculos = listaVeiculos;
     }
 
@@ -43,38 +29,6 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public Date getDataLicenca() {
-        return dataLicenca;
-    }
-
-    public void setDataLicenca(Date dataLicenca) {
-        this.dataLicenca = dataLicenca;
-    }
-
-    public String getEducacao() {
-        return educacao;
-    }
-
-    public void setEducacao(String educacao) {
-        this.educacao = educacao;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public String getClasseEconomica() {
-        return classeEconomica;
-    }
-
-    public void setClasseEconomica(String classeEconomica) {
-        this.classeEconomica = classeEconomica;
-    }
-
     public String getEndereco() {
         return endereco;
     }
@@ -83,10 +37,38 @@ public class Cliente {
         this.endereco = endereco;
     }
     
+    public String listaVeiculosToString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nLista de veículos:");
+        for (Veiculo c : this.listaVeiculos) {
+            sb.append("\n" + c.toString());
+        }
+        return sb.toString();
+    }
+
+    public String getDocumento() {
+        return null;
+    }
+
+    public boolean cadastrarVeiculo(Veiculo veiculo) {
+        if (veiculo == null) { return false; }
+        listaVeiculos.add(veiculo);
+        return true;
+    }
+
+    public boolean removerVeiculo(Veiculo veiculo) {
+        if (veiculo == null) { return false; }
+        for (int i = 0; i < listaVeiculos.size(); i++) {
+            if (listaVeiculos.get(i) != null && listaVeiculos.get(i).getPlaca().equals(veiculo.getPlaca())) {
+                listaVeiculos.remove(i);
+                return true;
+            }
+        }
+        return true;
+    }
 
     public String toString() {
-        String clienteString = "Nome: " + this.nome + "\nEndereço: " + this.endereco + "\nData de Licença: " + this.dataLicenca.toString() +
-                                "\nEducação: " + this.educacao + "\nGênero: " + this.genero+ "\nClasse Econômica: " + this.classeEconomica;
+        String clienteString = "Nome: " + this.nome + "\nEndereço: " + this.endereco+listaVeiculosToString();
         return clienteString;
     }
 }

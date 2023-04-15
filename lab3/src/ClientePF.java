@@ -1,7 +1,12 @@
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ClientePF extends Cliente{
+    private Date dataLicenca;
+    private String educacao;
+    private String genero;
+    private String classeEconomica;
     private final String cpf;
     private Date dataNascimento;
 
@@ -9,12 +14,13 @@ public class ClientePF extends Cliente{
             String educacao , String genero , String classeEconomica,
             List < Veiculo > listaVeiculos, String cpf, Date dataNascimento) {
 
-        super( nome , endereco , dataLicenca , educacao , genero , classeEconomica , listaVeiculos );
+        super( nome , endereco , listaVeiculos );
         if (validarCPF(cpf)) {
             this.cpf = cpf;
         } else {
-            this.cpf = "CPF inválido!";
+            this.cpf = "CPF inválido";
         }
+        
         this.dataNascimento = dataNascimento;
     }
 
@@ -22,13 +28,12 @@ public class ClientePF extends Cliente{
             String educacao , String genero , String classeEconomica,
             String cpf, Date dataNascimento) {
 
-        super( nome , endereco , dataLicenca , educacao , genero , classeEconomica);
+        super( nome , endereco, new ArrayList<Veiculo>());
         if (validarCPF(cpf)) {
             this.cpf = cpf;
         } else {
-            this.cpf = "CPF inválido!";
+            this.cpf = "CPF inválido";
         }
-        this.dataNascimento = dataNascimento;
     }
 
     public String getCpf() {
@@ -44,7 +49,7 @@ public class ClientePF extends Cliente{
     }
     
     // recebe um cpf na forma de String e calcula seus dígitos verificadores
-    private int calcularDigitosVerificadores(String c) {
+    private static int calcularDigitosVerificadores(String c) {
 
         int dig1 = 0;
         int dig2 = 0;
@@ -99,7 +104,14 @@ public class ClientePF extends Cliente{
     }
     
     @Override
+    public String getDocumento() {
+        return this.cpf;
+    }
+
+    @Override
     public String toString() {
-        return "CPF: "+this.cpf+"\nData de nascimento: "+this.dataNascimento+toString();
+        return "Nome: " + this.nome + "\nEndereço: " + this.endereco + "\nData de Licença: " + this.dataLicenca.toString() +
+        "\nEducação: " + this.educacao + "\nGênero: " + this.genero+ "\nClasse Econômica: " + this.classeEconomica+"\nCPF: "+
+        this.cpf+"\nData de nascimento: "+this.dataNascimento+listaVeiculosToString();
     }
 }

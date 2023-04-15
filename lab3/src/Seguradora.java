@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.ArrayList;
 
 public class Seguradora {
     
@@ -6,11 +6,13 @@ public class Seguradora {
     private String telefone;
     private String email;
     private String endereco;
-    private List<Sinistro> listaSinistro;
-    private List<Cliente> listaClientes;
+    private ArrayList<Sinistro> listaSinistro;
+    private ArrayList<Cliente> listaClientes;
     
     // construtor
     public Seguradora(String nome, String telefone, String email, String endereco) {
+        listaSinistro = new ArrayList<Sinistro>();
+        listaClientes = new ArrayList<Cliente>();
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
@@ -50,16 +52,51 @@ public class Seguradora {
         this.endereco = endereco;
     }
 
-    public boolean cadastrarCliente(Cliente cliente);
+    public boolean cadastrarCliente(Cliente cliente) {
+        if (cliente == null) { return false; }
+        this.listaClientes.add(cliente);
+        return true;
+    }
 
-    public boolean removerCliente(String cliente);
+    public boolean removerCliente(String cliente) {
+        for (int i = 0; i < listaClientes.size(); i++) {
+            if (listaClientes.get(i) != null && listaClientes.get(i).getDocumento().equals(cliente)) {
+                listaClientes.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 
-    public List<Cliente> listarClientes(Cliente cliente);
+    public ArrayList<Cliente> listarClientes(String tipoCliente) {
 
-    public boolean gerarSinistro();
+        ArrayList<Cliente> clientesArray = new ArrayList<>();
+        for (Cliente c : listaClientes) {
+            if ((tipoCliente.equals("PF") && c instanceof ClientePF) || (tipoCliente.equals("PJ") && c instanceof ClientePJ)) {
+                clientesArray.add(c);
+            }
+        }
+        return clientesArray;
 
-    public boolean visualizarSinistro(String cliente);
+    }
 
-    public List<Sinistro> listarSinistros();
+    public boolean gerarSinistro(String endereco, Veiculo veiculo, Cliente cliente) {
+        return listaSinistro.add(new Sinistro(this.nome,endereco,this,veiculo,cliente));
+    }
+
+    public boolean visualizarSinistro(String cliente) {
+        boolean existeSinistro = false;
+        for (Sinistro s : listaSinistro) {
+            if (s.getCliente().getDocumento().equals(cliente)) {
+                System.out.println(s.toString());
+                existeSinistro = true;
+            }
+        }
+        return existeSinistro;
+    }
+
+    public ArrayList<Sinistro> listarSinistros() {
+        return listaSinistro;
+    }
     
 }
