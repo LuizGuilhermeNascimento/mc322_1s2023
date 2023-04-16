@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.lang.StringBuilder;
+import java.util.Date;
 
 public class Seguradora {
     
@@ -80,8 +82,8 @@ public class Seguradora {
 
     }
 
-    public boolean gerarSinistro(String endereco, Veiculo veiculo, Cliente cliente) {
-        return listaSinistro.add(new Sinistro(this.nome,endereco,this,veiculo,cliente));
+    public boolean gerarSinistro(Date data, String endereco, Veiculo veiculo, Cliente cliente) {
+        return listaSinistro.add(new Sinistro(data,endereco,this,veiculo,cliente));
     }
 
     public boolean visualizarSinistro(String cliente) {
@@ -98,5 +100,25 @@ public class Seguradora {
     public ArrayList<Sinistro> listarSinistros() {
         return listaSinistro;
     }
+    private String toStringListaClientes() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < listaClientes.size(); i++) {
+            sb.append("\n----- Cliente "+(i+1)+" ----\n");
+            sb.append(listaClientes.get(i).toString()+"\n");
+        }
+        return sb.toString();
+    }
+    private String toStringListaSinistro() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < listaSinistro.size(); i++) {
+            sb.append("\n----- Sinistro "+(i+1)+" ----\n");
+            sb.append(listaSinistro.get(i).toString()+"\n");
+        }
+        return sb.toString();
+    }
     
+    public String toString() {
+        return "Nome: "+this.nome+"\nTelefone: "+this.telefone+"\nEmail: "+this.email+"\nEndereço: "+this.endereco+
+        "\nLista de Clientes: "+toStringListaClientes()+"\nLista de Sinistros: "+toStringListaSinistro();
+    }
 }

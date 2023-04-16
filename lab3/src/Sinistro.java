@@ -1,9 +1,10 @@
 import java.util.Random;
+import java.util.Date;
 
 public class Sinistro {
     
     private final int id;
-    private String data;
+    private Date data;
     private String endereco;
     private Seguradora seguradora;
     private Veiculo veiculo;
@@ -18,7 +19,7 @@ public class Sinistro {
         return (r.nextInt(1000) * r.nextInt(1000));
     }
 
-    public Sinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+    public Sinistro(Date data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
         this.id = gerarId();
         this.data = data;
         this.endereco = endereco;
@@ -31,14 +32,14 @@ public class Sinistro {
     public int getId() {
         return id;
     }
-    public String getData() {
+    public Date getData() {
         return data;
     }
     public String getEndereco() {
         return endereco;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
     public void setEndereco(String endereco) {
@@ -70,8 +71,8 @@ public class Sinistro {
     }
 
     public String toString() {
-        return "Data: " + this.data + "\nEndereço: " + this.endereco + "\nSeguradora: " + this.seguradora.toString() +
-        "\nVeículo: " + this.veiculo.toString() + "\nCliente: " + this.cliente.toString();
+        return "Data: " + this.data.toString() + "\nEndereço: " + this.endereco + "\nSeguradora: " + this.seguradora.getNome() +
+        "\nVeículo: " + this.veiculo.getPlaca() + "\nDocumento do Cliente: " + this.cliente.getDocumento();
     }
     
 }

@@ -1,22 +1,17 @@
-import java.util.List;
+import java.util.ArrayList;
 
 public class Cliente {
     
     protected String nome;
     protected String endereco;
     
-    private List<Veiculo> listaVeiculos;
+    private ArrayList<Veiculo> listaVeiculos;
 
     // construtor
     public Cliente(String nome, String endereco) {
         this.nome = nome;
         this.endereco = endereco;
-    }
-
-    public Cliente(String nome, String endereco, List<Veiculo> listaVeiculos) {
-        this.nome = nome;
-        this.endereco = endereco;
-        this.listaVeiculos = listaVeiculos;
+        listaVeiculos = new ArrayList<Veiculo>();
     }
 
     // getters e setters
@@ -39,8 +34,10 @@ public class Cliente {
     
     public String listaVeiculosToString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\nLista de veículos:");
+        sb.append("\n\nLista de veículos:");
+        int i = 1;
         for (Veiculo c : this.listaVeiculos) {
+            sb.append("\n--- Veículo "+(i)+" ---");
             sb.append("\n" + c.toString());
         }
         return sb.toString();

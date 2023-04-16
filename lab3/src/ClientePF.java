@@ -12,28 +12,19 @@ public class ClientePF extends Cliente{
 
     public ClientePF(String nome , String endereco , Date dataLicenca,
             String educacao , String genero , String classeEconomica,
-            List < Veiculo > listaVeiculos, String cpf, Date dataNascimento) {
-
-        super( nome , endereco , listaVeiculos );
-        if (validarCPF(cpf)) {
-            this.cpf = cpf;
-        } else {
-            this.cpf = "CPF inválido";
-        }
-        
-        this.dataNascimento = dataNascimento;
-    }
-
-    public ClientePF(String nome , String endereco , Date dataLicenca,
-            String educacao , String genero , String classeEconomica,
             String cpf, Date dataNascimento) {
 
-        super( nome , endereco, new ArrayList<Veiculo>());
+        super( nome , endereco);
         if (validarCPF(cpf)) {
             this.cpf = cpf;
         } else {
             this.cpf = "CPF inválido";
         }
+        this.dataLicenca = dataLicenca;
+        this.educacao = educacao;
+        this.genero = genero;
+        this.classeEconomica = classeEconomica;
+        this.dataNascimento = dataNascimento;
     }
 
     public String getCpf() {

@@ -1,28 +1,14 @@
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 public class ClientePJ extends Cliente{
     private final String cnpj;
     private Date dataFundacao;
 
-    public ClientePJ(String nome , String endereco , Date dataLicenca,
-            String educacao , String genero , String classeEconomica,
-            List< Veiculo > listaVeiculos, String cnpj, Date dataFundacao) {
 
-        super( nome , endereco , listaVeiculos );
-        if (validarCNPJ(cnpj)) {
-            this.cnpj = cnpj;
-        } else {
-            this.cnpj = "CNPJ inválido";
-        }
-        this.dataFundacao = dataFundacao;
-    }
+    public ClientePJ(String nome, String endereco, String cnpj, Date dataFundacao) {
 
-    public ClientePJ(String nome , String endereco , Date dataLicenca,
-            String educacao , String genero , String classeEconomica,
-            String cnpj, Date dataFundacao) {
-
-        super( nome , endereco );
+        super( nome , endereco);
         if (validarCNPJ(cnpj)) {
             this.cnpj = cnpj;
         } else {
@@ -45,7 +31,7 @@ public class ClientePJ extends Cliente{
 
     @Override
     public String toString() {
-        return "CNPJ: "+this.cnpj+"\nData de fundação: "+this.dataFundacao + listaVeiculosToString();
+        return "Nome: "+this.nome +"\nEndereço: "+this.endereco +"\nCNPJ: "+this.cnpj+"\nData de fundação: "+this.dataFundacao + listaVeiculosToString();
     }
 
     public static boolean validarCNPJ(String cnpj) {
