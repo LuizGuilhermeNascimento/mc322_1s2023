@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ClientePF extends Cliente{
     private Date dataLicenca;
@@ -39,7 +37,10 @@ public class ClientePF extends Cliente{
         this.dataNascimento = dataNascimento;
     }
     
-    // recebe um cpf na forma de String e calcula seus dígitos verificadores
+    /**
+     * Cálculo dos dígitos verificadores
+     * @return O dígito verificador obtido a partir do cpf recebido
+     */
     private static int calcularDigitosVerificadores(String c) {
 
         int dig1 = 0;
@@ -66,7 +67,10 @@ public class ClientePF extends Cliente{
         return (dig1*10)+dig2;
     }
 
-    // recebe um cpf e retorna um booleano indicando se o CPF é válido
+    /**
+     * Validação de CPF
+     * @return True se o CPF for válido, False senão
+     */
     public boolean validarCPF(String c) {
 
         String regex = "[^0-9]";
@@ -94,6 +98,9 @@ public class ClientePF extends Cliente{
         return true;
     }
     
+    /**
+     * Retorna o documento do cliente
+     */
     @Override
     public String getDocumento() {
         return this.cpf;

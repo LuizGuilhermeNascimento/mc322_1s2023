@@ -7,10 +7,11 @@ public class Veiculo {
     
     
     // construtor
-    public Veiculo(String placa, String marca, String modelo) {
+    public Veiculo(String placa, String marca, String modelo, int anoFabricacao) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
+        this.anoFabricacao = anoFabricacao;
     }
 
     // getters e setters

@@ -1,5 +1,4 @@
 import java.util.Date;
-import java.util.ArrayList;
 
 public class ClientePJ extends Cliente{
     private final String cnpj;
@@ -34,7 +33,11 @@ public class ClientePJ extends Cliente{
         return "Nome: "+this.nome +"\nEndereço: "+this.endereco +"\nCNPJ: "+this.cnpj+"\nData de fundação: "+this.dataFundacao + listaVeiculosToString();
     }
 
-    public static boolean validarCNPJ(String cnpj) {
+    /**
+     * Validação de CNPJ
+     * @return True se o CNPJ for válido, False senão
+     */
+    public boolean validarCNPJ(String cnpj) {
 
         String regex = "[^0-9]";
         cnpj = cnpj.replaceAll(regex, "");
@@ -66,6 +69,9 @@ public class ClientePJ extends Cliente{
         return true;
     }
 
+    /**
+     * Retorna o documento do cliente
+     */
     @Override
     public String getDocumento() {
         return this.cnpj;
