@@ -32,6 +32,10 @@ public class Cliente {
         this.endereco = endereco;
     }
     
+    /**
+     * Transforma uma ArrayList de clientes em String
+     * @return String contendo as informações dos veículos do cliente
+     */
     public String listaVeiculosToString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\n\nLista de veículos:");
@@ -43,16 +47,27 @@ public class Cliente {
         return sb.toString();
     }
 
+    /**
+     * Retorna o documento do cliente
+     */
     public String getDocumento() {
         return null;
     }
 
+    /**
+     * Cadastra um veículo no cliente
+     * @return True se o cadastro for concluído com sucesso, False senão
+     */
     public boolean cadastrarVeiculo(Veiculo veiculo) {
         if (veiculo == null) { return false; }
         listaVeiculos.add(veiculo);
         return true;
     }
 
+    /**
+     * Remove um veículo cadastrado no veículo
+     * @return True se a remoção for concluída com sucesso, False senão
+     */
     public boolean removerVeiculo(Veiculo veiculo) {
         if (veiculo == null) { return false; }
         for (int i = 0; i < listaVeiculos.size(); i++) {

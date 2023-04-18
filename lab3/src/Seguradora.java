@@ -60,6 +60,11 @@ public class Seguradora {
      */
     public boolean cadastrarCliente(Cliente cliente) {
         if (cliente == null) { return false; }
+        for (int i = 0; i < listaClientes.size(); i++) {
+            if (listaClientes.get(i) != null && listaClientes.get(i).getDocumento().equals(cliente)) {
+                return false;
+            }
+        }
         this.listaClientes.add(cliente);
         return true;
     }
