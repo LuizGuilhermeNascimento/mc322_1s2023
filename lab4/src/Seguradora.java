@@ -61,10 +61,11 @@ public class Seguradora {
     public boolean cadastrarCliente(Cliente cliente) {
         if (cliente == null) { return false; }
         for (int i = 0; i < listaClientes.size(); i++) {
-            if (listaClientes.get(i) != null && listaClientes.get(i).getDocumento().equals(cliente)) {
+            if (listaClientes.get(i) != null && listaClientes.get(i).getDocumento().equals(cliente.getDocumento())) {
                 return false;
             }
         }
+        cliente.setValorSeguro(calcularPrecoSeguroCliente(cliente));
         this.listaClientes.add(cliente);
         return true;
     }
@@ -84,10 +85,10 @@ public class Seguradora {
     }
 
     /**
-     * Listagem de clientes
-     * @return ArrayList<Cliente>
+     * Listagem de clientes por tipo (PF ou PJ)
+     * @return ArrayList<Cliente> com clientes do mesmo tipo
      */
-    public ArrayList<Cliente> listarClientes(String tipoCliente) {
+    public ArrayList<Cliente> listarClientesPorTipo(String tipoCliente) {
 
         ArrayList<Cliente> clientesArray = new ArrayList<>();
         for (Cliente c : listaClientes) {
@@ -100,26 +101,43 @@ public class Seguradora {
     }
 
     /**
+     * Listagem de clientes geral (PF e PJ)
+     * @return ArrayList<Cliente> com todos os clientes
+     */
+    public ArrayList<Cliente> listarClientes() {
+        return this.listaClientes;
+    }
+
+    /**
      * Geração de sinistro
      * @return True se o registro for concluído com sucesso, False senão
      */
     public boolean gerarSinistro(Date data, String endereco, Veiculo veiculo, Cliente cliente) {
-        return listaSinistro.add(new Sinistro(data,endereco,this,veiculo,cliente));
+        
+        listaSinistro.add(new Sinistro(data,endereco,this,veiculo,cliente));
+        for (Cliente c : this.listaClientes) {
+            if (c.getDocumento().equals(cliente.getDocumento())) {
+                c.setValorSeguro(calcularPrecoSeguroCliente(c));
+            }
+        }
+        return true;
     }
 
     /**
      * Visualização do Sinistro de um Cliente
      * @return True se o cliente possui um sinistro, False senão
      */
-    public boolean visualizarSinistro(String cliente) {
-        boolean existeSinistro = false;
+    public String visualizarSinistro(String cliente) {
+        StringBuilder sb = new StringBuilder();
         for (Sinistro s : listaSinistro) {
             if (s.getCliente().getDocumento().equals(cliente)) {
-                System.out.println(s.toString());
-                existeSinistro = true;
+                sb.append(s.toString());
             }
         }
-        return existeSinistro;
+        if (!sb.isEmpty()) {
+            return sb.toString();
+        }
+        return "\nO cliente não possui sinistros!\n";
     }
 
     /**
@@ -129,12 +147,30 @@ public class Seguradora {
     public ArrayList<Sinistro> listarSinistros() {
         return listaSinistro;
     }
+
+    /**
+     * Excluir sinistro com base no seu ID
+     * @return True se o sinistro for encontrado, False senão
+     */
+    public boolean excluirSinistro(int id) {
+        int indice_remover = 0;
+        boolean sinistro_encontrado = false;
+        for (int i = 0; i < listaSinistro.size(); i++) {
+            if (listaSinistro.get(i).getId() == id) {
+                indice_remover = i;
+                sinistro_encontrado = true;
+                break;
+            }
+        }
+        listaSinistro.remove(indice_remover);
+        return sinistro_encontrado;
+    }
     
     /**
      * Transforma uma ArrayList de clientes em uma String
      * @return String
      */
-    private String toStringListaClientes() {
+    public String toStringListaClientes() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < listaClientes.size(); i++) {
             sb.append("\n----- Cliente "+(i+1)+" ----\n");
@@ -147,7 +183,7 @@ public class Seguradora {
      * Transforma uma ArrayList de sinistros em uma String
      * @return String
      */
-    private String toStringListaSinistro() {
+    public String toStringListaSinistro() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < listaSinistro.size(); i++) {
             sb.append("\n----- Sinistro "+(i+1)+" ----\n");
@@ -158,15 +194,15 @@ public class Seguradora {
 
     /**
      * Procura um cliente baseado em um documento (CPF OU CNPJ)
-     * @return toString() do objeto cliente encontrado, ou uma mensagem de invalidez
+     * @return objeto Cliente, ou null caso não for encontrado
      */
-    public String procurarClientePorDocumento(String tipoCliente) {
+    public Cliente procurarClientePorDocumento(String tipoCliente) {
         for (Cliente c : listaClientes) {
             if (tipoCliente.equals(c.getDocumento())) {
-                return c.toString();
+                return c;
             }
         }
-        return "Cliente não encontrado!";
+        return null;
     }
     
     public String toString() {
@@ -174,6 +210,49 @@ public class Seguradora {
         "\n\nLista de Clientes: "+toStringListaClientes()+"\nLista de Sinistros: "+toStringListaSinistro();
     }
 
-    public double calcularPrecoSeguroCliente(Cliente cliente);
-    public double calcularReceita();
+    /**
+     * Calcula o preço do seguro de um cliente utilizando seu score
+     * e a quantidade de sinistros
+     */
+    public double calcularPrecoSeguroCliente(Cliente cliente) {
+        int qtdeSinistros = 0;
+        for (Sinistro s : listaSinistro) {
+            if (s.getCliente().getDocumento().equals(cliente.getDocumento())) {
+                qtdeSinistros++;
+            }
+        }
+        return cliente.calculaScore() * (1+qtdeSinistros);
+    }
+
+    /**
+     * Transferir seguro
+     * @return True se a operação foi realizada com sucesso, False senão
+     */
+    public boolean transferirSeguro(String clienteFonteDocumento, String clienteDestinoDocumento) {
+        ArrayList<Veiculo> fonteArray = procurarClientePorDocumento(clienteFonteDocumento).listarVeiculos();
+        boolean fonteAtualizada = false;
+        boolean destinoAtualizado = false;
+        for (Cliente c : listaClientes) {
+            if (c.getDocumento().equals(clienteFonteDocumento)) {
+                c.setListaVeiculos(new ArrayList<Veiculo>());
+                fonteAtualizada = true;
+            } else if (c.getDocumento().equals(clienteDestinoDocumento)) {
+                c.setListaVeiculos(fonteArray);
+                destinoAtualizado = true;
+            }
+            if (fonteAtualizada && destinoAtualizado) { return true; }
+        }
+        return false;
+    }
+
+    /**
+     * Calcula a receita da seguradora
+     */
+    public double calcularReceita() {
+        double receita = 0;
+        for (Cliente c : this.listaClientes) {
+            receita += c.getValorSeguro(); 
+        }
+        return receita;
+    }
 }

@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class ClientePF extends Cliente{
     private Date dataLicenca;
@@ -37,6 +38,15 @@ public class ClientePF extends Cliente{
         this.dataNascimento = dataNascimento;
     }
     
+    private int calcularIdade(Date dataNascimento) {
+        Date data_atual = new Date();
+        // calculando a diferença entre as datas em milissegundos
+        long diferencaMS = data_atual.getTime() - dataNascimento.getTime();
+        // converte-se a diferença de milissegundos em minutos
+        long diff = TimeUnit.MINUTES.convert(diferencaMS, TimeUnit.MILLISECONDS);
+        // retorna a diferença convertida em anos
+        return (int)(diff / 525600);
+    }
     
     /**
      * Retorna o documento do cliente
@@ -50,8 +60,16 @@ public class ClientePF extends Cliente{
     public String toString() {
         return "Nome: " + this.nome + "\nEndereço: " + this.endereco + "\nData de Licença: " + this.dataLicenca.toString() +
         "\nEducação: " + this.educacao + "\nGênero: " + this.genero+ "\nClasse Econômica: " + this.classeEconomica+"\nCPF: "+
-        this.cpf+"\nData de nascimento: "+this.dataNascimento+listaVeiculosToString();
+        this.cpf+"\nData de nascimento: "+this.dataNascimento+ "\nValor do Seguro: "+this.valorSeguro+listaVeiculosToString();
     }
 
-    public double calculaScore();
+    /**
+     * Calcula o score do cliente baseado na fórmula fornecida
+     */
+    @Override
+    public double calculaScore() {
+        int idadeCliente = calcularIdade(this.dataNascimento);
+
+        return CalcSeguro.VALOR_BASE.getValue() * CalcSeguro.FATOR_IDADE.calcularFator(idadeCliente) * this.listaVeiculos.size();
+    };
 }

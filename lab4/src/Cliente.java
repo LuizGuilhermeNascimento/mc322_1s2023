@@ -5,18 +5,22 @@ public class Cliente {
     protected String nome;
     protected String endereco;
     
-    private ArrayList<Veiculo> listaVeiculos;
+    protected ArrayList<Veiculo> listaVeiculos;
     protected double valorSeguro;
 
     // construtor
     public Cliente(String nome, String endereco) {
-        this.nome = nome;
+        if (Validacao.validarNome(nome)) {
+            this.nome = nome;
+        } else {
+            this.nome = "nome inválido!";
+        }
+        
         this.endereco = endereco;
         listaVeiculos = new ArrayList<Veiculo>();
     }
 
     // getters e setters
-    
     public String getNome() {
         return nome;
     }
@@ -31,6 +35,16 @@ public class Cliente {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+    public double getValorSeguro() {
+        return this.valorSeguro;
+    }
+    public void setValorSeguro(double valorSeguro) {
+        this.valorSeguro = valorSeguro;
+    }
+
+    public void setListaVeiculos(ArrayList<Veiculo> novosVeiculos) {
+        this.listaVeiculos = novosVeiculos;
     }
     
     /**
@@ -49,7 +63,7 @@ public class Cliente {
     }
 
     /**
-     * Retorna o documento do cliente
+     * @stub
      */
     public String getDocumento() {
         return null;
@@ -69,21 +83,34 @@ public class Cliente {
      * Remove um veículo cadastrado no veículo
      * @return True se a remoção for concluída com sucesso, False senão
      */
-    public boolean removerVeiculo(Veiculo veiculo) {
-        if (veiculo == null) { return false; }
+    public boolean removerVeiculo(String placaVeiculo) {
+
         for (int i = 0; i < listaVeiculos.size(); i++) {
-            if (listaVeiculos.get(i) != null && listaVeiculos.get(i).getPlaca().equals(veiculo.getPlaca())) {
+            if (listaVeiculos.get(i) != null && listaVeiculos.get(i).getPlaca().equals(placaVeiculo)) {
                 listaVeiculos.remove(i);
                 return true;
             }
         }
-        return true;
+        return false;
+    }
+
+    /**
+     * Listagem dos veículos
+     * @return
+     */
+    public ArrayList<Veiculo> listarVeiculos() {
+        return this.listaVeiculos;
     }
 
     public String toString() {
-        String clienteString = "Nome: " + this.nome + "\nEndereço: " + this.endereco+listaVeiculosToString();
+        String clienteString = "Nome: " + this.nome + "\nEndereço: " +this.endereco+ "\nValor do Seguro: "+this.valorSeguro+listaVeiculosToString();
         return clienteString;
     }
 
-    public double calculaScore();
+    /**
+     * @stub
+     */
+    public double calculaScore() {
+        return 0.0;
+    };
 }

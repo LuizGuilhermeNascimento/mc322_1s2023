@@ -1,4 +1,7 @@
-public static class Validacao {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Validacao {
     /**
      * Cálculo dos dígitos verificadores
      * @return O dígito verificador obtido a partir do cpf recebido
@@ -33,7 +36,7 @@ public static class Validacao {
      * Validação de CPF
      * @return True se o CPF for válido, False senão
      */
-    public boolean validarCPF(String c) {
+    public static boolean validarCPF(String c) {
 
         String regex = "[^0-9]";
         c = c.replaceAll(regex, "");
@@ -64,7 +67,7 @@ public static class Validacao {
      * Validação de CNPJ
      * @return True se o CNPJ for válido, False senão
      */
-    public boolean validarCNPJ(String cnpj) {
+    public static boolean validarCNPJ(String cnpj) {
 
         String regex = "[^0-9]";
         cnpj = cnpj.replaceAll(regex, "");
@@ -96,5 +99,13 @@ public static class Validacao {
         return true;
     }
 
-    public boolean validarNome(String nome);
+    /**
+     * Validação de Nome
+     * @return True se não houver números, False senão
+     */
+    public static boolean validarNome(String nome) {
+        Pattern pattern = Pattern.compile("\\d");
+        Matcher matcher = pattern.matcher(nome);
+        return !matcher.find();
+    };
 }
