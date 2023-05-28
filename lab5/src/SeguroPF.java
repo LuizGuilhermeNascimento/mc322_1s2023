@@ -12,6 +12,7 @@ public class SeguroPF extends Seguro {
         this.valorMensal = calculaValor();
     }
 
+    // getters e setters
     public Veiculo getVeiculo() {
         return veiculo;
     }

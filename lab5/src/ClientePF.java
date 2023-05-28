@@ -25,6 +25,7 @@ public class ClientePF extends Cliente {
         this.listaVeiculos = new ArrayList<Veiculo>();
     }
 
+    // getters e setters
     public String getCpf() {
         return cpf;
     }
@@ -110,6 +111,9 @@ public class ClientePF extends Cliente {
         return this.listaVeiculos;
     }
 
+    /**
+     * Retorna um veículo baseado na placa
+     */
     public Veiculo getVeiculoPorPlaca(String placa) {
         for (Veiculo v : listaVeiculos) {
             if (v.getPlaca().equals(placa)) {

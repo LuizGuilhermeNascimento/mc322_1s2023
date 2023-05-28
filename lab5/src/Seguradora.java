@@ -58,19 +58,44 @@ public class Seguradora {
         return listaSeguros;
     }
 
+    /**
+     * 1º sobrecarga de gerarSeguro
+     * Gera um seguro PF recebendo os dados separadamente,
+     * adicionando o seguro na lista de seguros
+     */
     public boolean gerarSeguro(Date dataInicio, Date dataFim, Veiculo veiculo, ClientePF cliente) {
         Seguro novoSeguro = new SeguroPF(dataInicio, dataFim, this, veiculo, cliente);
         return listaSeguros.add(novoSeguro);
     }
 
+    /**
+     * 2º sobrecarga de gerarSeguro
+     * Gera um seguro PJ recebendo os dados separadamente,
+     * adicionando o seguro na lista de seguros
+     */
     public boolean gerarSeguro(Date dataInicio, Date dataFim, Frota frota, ClientePJ cliente) {
         Seguro novoSeguro = new SeguroPJ(dataInicio, dataFim, this, frota, cliente);
         return listaSeguros.add(novoSeguro);
     }
+
+    /**
+     * 3º sobrecarga de gerarSeguro
+     * Recebe o objeto Seguro e o adiciona na lista de seguros
+     */
     public boolean gerarSeguro(Seguro seguro) {
         return listaSeguros.add(seguro);
     }
 
+    /**
+     * Cancela o seuro
+     * @param documentoCliente
+     * @param identificador
+     * O identificador pode representar a placa do veículo ou o code da frota
+     * Se o cliente for PF, então o identificador representa a placa do veículo
+     * cadastrado no cliente
+     * Se o cliente for PJ, então o identificador representa o code da frota
+     * cadastrada no cliente
+     */
     public boolean cancelarSeguro(String documentoCliente, String identificador) {
         for (int i = 0; i < listaSeguros.size(); i++) {
             if (listaSeguros.get(i).getCliente() instanceof ClientePF) {
@@ -91,6 +116,9 @@ public class Seguradora {
         return false;
     }
 
+    /**
+     * Cancela o seguro baseado no seu id
+     */
     public boolean cancelarSeguroPorId(int id) {
         for (int i = 0; i < listaSeguros.size(); i++) {
             if (listaSeguros.get(i).getId() == id) {
@@ -101,6 +129,9 @@ public class Seguradora {
         return false;
     }
 
+    /**
+     * Retorna um array com os seguros de um cliente específico
+     */
     public ArrayList<Seguro> getSegurosPorCliente(String documentoCliente) {
         ArrayList<Seguro> seguros = new ArrayList<>();
         for (Seguro s : listaSeguros) {
@@ -111,6 +142,9 @@ public class Seguradora {
         return seguros;
     }
 
+    /**
+     * Retorna um array com os sinistros de um cliente específico
+     */
     public ArrayList<Sinistro> getSinistrosPorCliente(String documentoCliente) {
         ArrayList<Sinistro> sinistros = new ArrayList<>();
         for (Seguro s : listaSeguros) {
@@ -123,6 +157,9 @@ public class Seguradora {
         return sinistros;
     }
 
+    /**
+     * Retorna um array com todos os sinistros da seguradora
+     */
     public ArrayList<Sinistro> getSinistrosSeguradora() {
         ArrayList<Sinistro> sinistros = new ArrayList<>();
         for (Seguro s : listaSeguros) {
@@ -131,6 +168,9 @@ public class Seguradora {
         return sinistros;
     }
 
+    /**
+     * Retorna um array com todos os veículos da seguradora
+     */
     public ArrayList<Veiculo> getVeiculosSeguradora() {
         ArrayList<Veiculo> veiculos = new ArrayList<>();
         for (Cliente c : listaClientes) {
@@ -139,6 +179,9 @@ public class Seguradora {
         return veiculos;
     }
 
+    /**
+     * Retorna um array com todas as frotas da seguradora
+     */
     public ArrayList<Frota> getFrotaSeguradora() {
         ArrayList<Frota> frotas = new ArrayList<>();
 

@@ -33,6 +33,11 @@ public abstract class Cliente {
         this.endereco = endereco;
     }
 
+    /**
+     * Lista todos os veículos cadastrados no cliente
+     * Caso seja PF, retorna a array de veículos
+     * Caso seja PJ, retorna um array com todos os veículos de todas as frotas
+     */
     public ArrayList<Veiculo> listaVeiculosCadastrados() {
         return null;
     }

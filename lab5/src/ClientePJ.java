@@ -20,7 +20,7 @@ public class ClientePJ extends Cliente{
         this.qtdeFuncionarios = qtdeFuncionarios;
     }
 
-    
+    // getters e setters
     public int getQtdeFuncionarios() {
         return qtdeFuncionarios;
     }
@@ -51,6 +51,10 @@ public class ClientePJ extends Cliente{
         return true;
     }
 
+    /**
+     * 1º sobrecarga de atualizarFrota
+     * Utilizada para adicionar um veículo
+     */
     public boolean atualizarFrota(String code, FrotaOperacoes operacao, Veiculo veiculo) {
         for (Frota f : listaFrotas) {
             if (f.getCode().equals(code)) {
@@ -65,6 +69,10 @@ public class ClientePJ extends Cliente{
         return false;
     }
 
+    /**
+     * 2º sobrecarga de atualizarFrota
+     * Utilizada para remover um veículo
+     */
     public boolean atualizarFrota(String code, FrotaOperacoes operacao, String placaVeiculo) {
         for (Frota f : listaFrotas) {
             if (f.getCode().equals(code)) {
@@ -79,7 +87,10 @@ public class ClientePJ extends Cliente{
         return false;
     }
 
-
+    /**
+     * 3º sobrecarga de atualizarFrota
+     * Utilizada para remover uma frota
+     */
     public boolean atualizarFrota(String code, FrotaOperacoes operacao) {
 
         for (int i = 0; i < listaFrotas.size(); i++) {
@@ -93,6 +104,9 @@ public class ClientePJ extends Cliente{
         return false;
     }
 
+    /**
+     * Lista os veículos de uma frota específica
+     */
     public ArrayList<Veiculo> getVeiculosPorFrota(String code) {
         for (Frota f : listaFrotas) {
             if (f.getCode().equals(code)) {
@@ -114,7 +128,11 @@ public class ClientePJ extends Cliente{
         }
         return veiculos;
     }
-
+    
+    /**
+     * Retorna a lista de frotas em forma de string,
+     * contendo apenas os codes das frotas
+     */
     public String toStringCodeFrota() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nCódigos das frotas:\n");

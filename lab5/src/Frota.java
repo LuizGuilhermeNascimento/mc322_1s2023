@@ -9,7 +9,9 @@ public class Frota {
         this.code = geradorCode();
         this.listaVeiculos = new ArrayList<>();
     }
-
+    /**
+     * Gera um code para frota utilizando a classe UUID transformada em string
+     */
     public String geradorCode() {
         UUID idGerada = UUID.randomUUID();
         return idGerada.toString();
@@ -50,6 +52,9 @@ public class Frota {
         return false;
     }
 
+    /**
+     * Retorna uma lista de placas de veículos em string
+     */
     public String toStringPlacaVeiculos() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nPlaca dos veículos:\n");
@@ -59,6 +64,9 @@ public class Frota {
         return sb.toString();
     }
 
+    /**
+     * Transforma uma lista de veículos em string
+     */
     public String toStringListaVeiculos() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nLista de veículos:\n");

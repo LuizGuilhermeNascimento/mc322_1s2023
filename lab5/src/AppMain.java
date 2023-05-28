@@ -563,8 +563,6 @@ public class AppMain {
         Frota frota = new Frota();
         Condutor condutor1 = new Condutor("940.153.620-12", "Condutor1", "(99)99999-9999", "Endereço condutor 1", "condutor1@gmail.com", dataNascimentoCondutor1);
         Condutor condutor2 = new Condutor("540.626.080-49", "Condutor2", "(99)99999-9999", "Endereço condutor 2", "condutor2@gmail.com", dataNascimentoCondutor2);
-
-        
         SeguroPF seguroPF = new SeguroPF(dataInicio, dataFim, seguradora, veiculo1, clientePF);
         SeguroPJ seguroPJ = new SeguroPJ(dataInicio, dataFim, seguradora, frota, clientePJ);
 
@@ -606,6 +604,7 @@ public class AppMain {
         System.out.println("Cliente PJ: " + seguradora.cadastrarCliente(clientePJ));
         System.out.println("\n------------------------------------------------\n");
         System.out.println("FEEDBACK DO CANCELAMENTO DE SINISTRO NA SEGURADORA\n");
+        // utiliza o id para cancelar um sinistro
         int idSinistro = seguradora.getListaSeguros().get(0).getListaSinistros().get(0).getId();
         System.out.println(seguradora.getListaSeguros().get(0).removerSinistroPorId(idSinistro));
         System.out.println("\n------------------------------------------------\n");
@@ -638,6 +637,7 @@ public class AppMain {
         System.out.println(seguroPF.toString());
         System.out.println("\n------------------------------------------------\n");
         System.out.println("CLASSE SINISTRO: ");
+        // gera um sinistro para que seja possível chamar o método toString()
         seguradora.getListaSeguros().get(0).gerarSinistro(dataSinistro, "Endereço sinistro", "540.626.080-49");
         System.out.println(seguradora.getListaSeguros().get(0).getListaSinistros().get(0).toString());
 

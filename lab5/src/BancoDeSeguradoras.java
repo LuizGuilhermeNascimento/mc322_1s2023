@@ -1,5 +1,8 @@
 import java.util.HashMap;
-
+/**
+ * Classe utilizada para armazenar as seguradoras (pressupondo que mais de uma seguradora pode ser cadastrada),
+ * permitindo com que elas sejam acessadas rapidamente por meio de um hash
+ */
 public class BancoDeSeguradoras {
     private HashMap<String, Seguradora> hash;
 
@@ -10,7 +13,11 @@ public class BancoDeSeguradoras {
     public boolean contemSeguradora(String nomeSeguradora) {
         return hash.containsKey(nomeSeguradora);
     }
-
+    /**
+     * Atualiza uma seguradora no hash
+     * Caso a seguradora já esteja armazenada, atualiza o objeto Seguradora relativo
+     * Caso não esteja, adiciona no hash
+     */
     public void updateSeguradora(Seguradora seguradora) {
         hash.put(seguradora.getNome(), seguradora);
     }

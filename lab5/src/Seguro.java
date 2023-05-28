@@ -28,6 +28,7 @@ public abstract class Seguro {
         return (r.nextInt(1000) * r.nextInt(1000));
     }
 
+    // getters e setters
     public Cliente getCliente() {
         return cliente;
     }
@@ -99,6 +100,9 @@ public abstract class Seguro {
         return sb.toString();
     }
 
+    /**
+     * Transforma uma lista de id de sinistros em uma String
+     */
     public String toStringIdSinistros() {
         StringBuilder sb = new StringBuilder();
         sb.append("ID's do sinistros:\n");
@@ -108,6 +112,9 @@ public abstract class Seguro {
         return sb.toString();
     }
 
+    /**
+     * Transforma uma lista de cpf de condutores em uma String
+     */
     public String toStringCpfCondutores() {
         StringBuilder sb = new StringBuilder();
         sb.append("CPF dos condutores:\n");
@@ -128,11 +135,16 @@ public abstract class Seguro {
         }
         return false;
     }
-
+    /**
+     * Adiciona um condutor recebendo um objeto Condutor
+     */
     public boolean adicionarCondutor(Condutor condutor) {
         return listaCondutores.add(condutor);
     }
 
+    /**
+     * Remove um condutor recebendo o documento do condutor
+     */
     public boolean removerCondutor(String documentoCondutor) {
         for (int i = 0; i < listaCondutores.size(); i++) {
             if (listaCondutores.get(i).getCPF().equals(documentoCondutor)) {
@@ -143,6 +155,9 @@ public abstract class Seguro {
         return false;
     }
 
+    /**
+     * Remove um sinistro baseado no seu id
+     */
     public boolean removerSinistroPorId(int id) {
         for (int i = 0; i < listaSinistros.size(); i++) {
             if (listaSinistros.get(i).getId() == id) {

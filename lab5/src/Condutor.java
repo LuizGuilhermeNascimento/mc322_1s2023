@@ -53,7 +53,7 @@ public class Condutor {
     public String getCPF() {
         return cpf;
     }
-
+    // construtor
     public Condutor(String cpf, String nome, String telefone, String endereco, String email, Date dataNascimento) {
 
         if (Validacao.validarCPF(cpf)) {
@@ -67,16 +67,27 @@ public class Condutor {
         this.listaSinistros = new ArrayList<Sinistro>();
     }
 
+    /**
+     * 1º sobrecarga de adicionarSinistro
+     * Utilizada para adicionar um sinistro usando os dados do sinistro separadamente
+     */
     public boolean adicionarSinistro(Date data, String endereco, Veiculo veiculo, Seguro seguro) {
         listaSinistros.add(new Sinistro(data, endereco, this, seguro));
         return true;
     }
 
+    /**
+     * 1º sobrecarga de adicionarSinistro
+     * Utilizada para adicionar um sinistro usando o objeto Sinistro
+     */
     public boolean adicionarSinistro(Sinistro sinistro) {
         listaSinistros.add(sinistro);
         return true;
     }
 
+    /**
+     * Remove um sinistro baseado no seu id
+     */
     public boolean removerSinistro(int id) {
         for (Sinistro s : listaSinistros) {
             if (s.getId() == id) {
@@ -87,6 +98,9 @@ public class Condutor {
         return false;
     }
 
+    /**
+     * Transforma uma lista de sinistros em string
+     */
     public String toStringListaSinistros() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nLista de sinistros: \n");
