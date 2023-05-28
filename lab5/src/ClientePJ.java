@@ -53,44 +53,81 @@ public class ClientePJ extends Cliente{
 
     public boolean atualizarFrota(String code, FrotaOperacoes operacao, Veiculo veiculo) {
         for (Frota f : listaFrotas) {
-            if (frota.getCode().equals(code)) {
+            if (f.getCode().equals(code)) {
                 switch(operacao) {
-                    case FrotaOperacoes.ADICIONAR_VEICULO:
+                    case ADICIONAR_VEICULO:
                         f.addVeiculo(veiculo);
-                    case FrotaOperacoes.REMOVER_VEICULO:
-                        f.removeVeiculo(veiculo);
+                    default:
+                        break;
                 }
             }
         }
         return false;
     }
 
-    public boolean atualizarFrota(String code, FrotaOperacoes operacao) {
-        int to_remove;
-        for (int i = 0; i < listaFrotas.size(); i++) {
-            if (listaFrotas.get(i).getCode().equals(code)) {
-                if (operacao.equals(FrotaOperacoes.REMOVER_FROTA)) {
-                    to_remove = i;
-                    break;
+    public boolean atualizarFrota(String code, FrotaOperacoes operacao, String placaVeiculo) {
+        for (Frota f : listaFrotas) {
+            if (f.getCode().equals(code)) {
+                switch(operacao) {
+                    case REMOVER_VEICULO:
+                        f.removeVeiculo(placaVeiculo);
+                    default:
+                        break;
                 }
             }
         }
-        return listaFrotas.remove(to_remove);
+        return false;
+    }
+
+
+    public boolean atualizarFrota(String code, FrotaOperacoes operacao) {
+
+        for (int i = 0; i < listaFrotas.size(); i++) {
+            if (listaFrotas.get(i).getCode().equals(code)) {
+                if (operacao.equals(FrotaOperacoes.REMOVER_FROTA)) {
+                    listaFrotas.remove(i);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public ArrayList<Veiculo> getVeiculosPorFrota(String code) {
         for (Frota f : listaFrotas) {
-            if (frota.getCode().equals(code)) {
+            if (f.getCode().equals(code)) {
                 return f.getListaVeiculos();
             }
         }
         return null;
     }
 
+    public ArrayList<Frota> listarFrotas() {
+        return listaFrotas;
+    }
+
+    @Override
+    public ArrayList<Veiculo> listaVeiculosCadastrados() {
+        ArrayList<Veiculo> veiculos = new ArrayList<>();
+        for (Frota f : listaFrotas) {
+            veiculos.addAll(f.getListaVeiculos());
+        }
+        return veiculos;
+    }
+
+    public String toStringCodeFrota() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nCódigos das frotas:\n");
+        for (int i = 0; i < listaFrotas.size(); i++) {
+            sb.append(listaFrotas.get(i).getCode() + "\n");
+        }
+        return sb.toString();
+    }
+
     @Override
     public String toString() {
         return "Nome: "+this.nome +"\nEndereço: "+this.endereco +"\nCNPJ: "+this.cnpj+"\nData de fundação: "+this.dataFundacao +
-        "\nValor do Seguro: "+this.valorSeguro+"\nQuantidade de funcionários: "+this.qtdeFuncionarios+ listaVeiculosToString();
+        "\nQuantidade de funcionários: "+this.qtdeFuncionarios+toStringCodeFrota();
     }
 
     /**
@@ -100,12 +137,4 @@ public class ClientePJ extends Cliente{
     public String getDocumento() {
         return this.cnpj;
     }
-
-    /**
-     * Calcula o score do cliente baseado na fórmula fornecida
-     */
-    @Override
-    public double calculaScore() {
-        return CalcSeguro.VALOR_BASE.getValue() * (1+ (double)(this.qtdeFuncionarios)/100) * this.listaVeiculos.size();
-    };
 }

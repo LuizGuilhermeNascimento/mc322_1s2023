@@ -42,14 +42,6 @@ public class Sinistro {
         this.endereco = endereco;
     }
 
-    public Seguradora getSeguradora() {
-        return seguradora;
-    }
-
-    public void setSeguradora(Seguradora seguradora) {
-        this.seguradora = seguradora;
-    }
-
     public Condutor getCondutor() {
         return condutor;
     }
@@ -62,10 +54,8 @@ public class Sinistro {
     public void setSeguro(Seguro seguro) {
         this.seguro = seguro;
     }
-
     public String toString() {
-        return "Data: " + this.data.toString() + "\nEndereço: " + this.endereco + "\nSeguradora: " + this.seguradora.getNome() +
-        "\nVeículo: " + this.veiculo.getPlaca() + "\nDocumento do Cliente: " + this.cliente.getDocumento();
+        return "Data: " + this.data.toString() + "\nEndereço: " + this.endereco+"\nCPF do condutor: " + condutor.getCPF() + "\nID do Seguro: "+seguro.getId();
     }
     
 }

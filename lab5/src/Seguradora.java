@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.lang.StringBuilder;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Seguradora {
     
@@ -55,6 +54,9 @@ public class Seguradora {
         this.endereco = endereco;
     }
 
+    public ArrayList<Seguro> getListaSeguros() {
+        return listaSeguros;
+    }
 
     public boolean gerarSeguro(Date dataInicio, Date dataFim, Veiculo veiculo, ClientePF cliente) {
         Seguro novoSeguro = new SeguroPF(dataInicio, dataFim, this, veiculo, cliente);
@@ -65,25 +67,39 @@ public class Seguradora {
         Seguro novoSeguro = new SeguroPJ(dataInicio, dataFim, this, frota, cliente);
         return listaSeguros.add(novoSeguro);
     }
+    public boolean gerarSeguro(Seguro seguro) {
+        return listaSeguros.add(seguro);
+    }
 
-    public boolean cancelarSeguro(String documentoCliente) {
+    public boolean cancelarSeguro(String documentoCliente, String identificador) {
         for (int i = 0; i < listaSeguros.size(); i++) {
             if (listaSeguros.get(i).getCliente() instanceof ClientePF) {
                 ClientePF clientePF = (ClientePF)listaSeguros.get(i).getCliente();
                 if (clientePF.getVeiculoPorPlaca(identificador) != null) {
-                    return listaSeguros.remove(i);
+                    listaSeguros.remove(i);
+                    return true;
                 }
             }
             if (listaSeguros.get(i).getCliente() instanceof ClientePJ) {
                 ClientePJ clientePJ = (ClientePJ)listaSeguros.get(i).getCliente();
                 if (clientePJ.getVeiculosPorFrota(identificador) != null) {
-                    return listaSeguros.remove(i);
+                    listaSeguros.remove(i);
+                    return true;
                 }
             }
         }
         return false;
     }
 
+    public boolean cancelarSeguroPorId(int id) {
+        for (int i = 0; i < listaSeguros.size(); i++) {
+            if (listaSeguros.get(i).getId() == id) {
+                listaSeguros.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 
     public ArrayList<Seguro> getSegurosPorCliente(String documentoCliente) {
         ArrayList<Seguro> seguros = new ArrayList<>();
@@ -104,7 +120,35 @@ public class Seguradora {
                 }
             }
         }
-        return seguros;
+        return sinistros;
+    }
+
+    public ArrayList<Sinistro> getSinistrosSeguradora() {
+        ArrayList<Sinistro> sinistros = new ArrayList<>();
+        for (Seguro s : listaSeguros) {
+            sinistros.addAll(s.getListaSinistros());
+        }
+        return sinistros;
+    }
+
+    public ArrayList<Veiculo> getVeiculosSeguradora() {
+        ArrayList<Veiculo> veiculos = new ArrayList<>();
+        for (Cliente c : listaClientes) {
+            veiculos.addAll(c.listaVeiculosCadastrados());
+        }
+        return veiculos;
+    }
+
+    public ArrayList<Frota> getFrotaSeguradora() {
+        ArrayList<Frota> frotas = new ArrayList<>();
+
+        for (Cliente c : listaClientes) {
+            if (c instanceof ClientePJ) {
+                ClientePJ clientePJ = (ClientePJ)c;
+                frotas.addAll(clientePJ.listarFrotas());
+            }
+        }
+        return frotas;
     }
 
     /**
@@ -118,7 +162,6 @@ public class Seguradora {
                 return false;
             }
         }
-        cliente.setValorSeguro(calcularPrecoSeguroCliente(cliente));
         this.listaClientes.add(cliente);
         return true;
     }
@@ -191,21 +234,21 @@ public class Seguradora {
     
     public String toString() {
         return "Nome: "+this.nome+"\nTelefone: "+this.telefone+"\nEmail: "+this.email+"\nEndereço: "+this.endereco+
-        "\n\nLista de Clientes: "+toStringListaClientes()+"\nLista de Sinistros: "+toStringListaSinistro();
+        "\n\nLista de Clientes: "+toStringListaClientes();
     }
 
     /**
      * Calcula o preço do seguro de um cliente utilizando seu score
      * e a quantidade de sinistros
      */
-    public double calcularPrecoSeguroCliente(Cliente cliente) {
-        int qtdeSinistros = 0;
-        for (Sinistro s : listaSinistro) {
-            if (s.getCliente().getDocumento().equals(cliente.getDocumento())) {
-                qtdeSinistros++;
+    public double calcularPrecoSeguroCliente(String documentoCliente) {
+        double precoSeguro = 0;
+        for (Seguro s : listaSeguros) {
+            if (s.getCliente().getDocumento().equals(documentoCliente)) {
+                precoSeguro += s.calculaValor();
             }
         }
-        return cliente.calculaScore() * (1+qtdeSinistros);
+        return precoSeguro;
     }
 
     /**

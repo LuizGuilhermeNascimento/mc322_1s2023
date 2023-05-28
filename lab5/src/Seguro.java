@@ -1,13 +1,15 @@
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 public abstract class Seguro {
-    private int final id;
+    private final int id;
     private Date dataInicio;
     private Date dataFim;
     private Seguradora seguradora;
-    private ArrayList<Sinistro> listaSinistros;
-    private ArrayList<Condutor> listaCondutores;
-    private int valorMensal;
+    protected ArrayList<Sinistro> listaSinistros;
+    protected ArrayList<Condutor> listaCondutores;
+    private double valorMensal;
     private Cliente cliente;
 
     public Seguro(Date dataInicio, Date dataFim, Seguradora seguradora, Cliente cliente) {
@@ -27,7 +29,12 @@ public abstract class Seguro {
         return (r.nextInt(1000) * r.nextInt(1000));
     }
 
-
+    public Cliente getCliente() {
+        return cliente;
+    }
+    public int getId() {
+        return id;
+    }
     public Date getDataInicio() {
         return dataInicio;
     }
@@ -46,7 +53,7 @@ public abstract class Seguro {
     public void setSeguradora(Seguradora seguradora) {
         this.seguradora = seguradora;
     }
-    public int getValorMensal() {
+    public double getValorMensal() {
         return valorMensal;
     }
     public void setValorMensal(int valorMensal) {
@@ -79,33 +86,34 @@ public abstract class Seguro {
     public double calculaValor() {
         return 0.0;
     }
-    
-    /**
-     * Visualização do Sinistro de um Cliente
-     * @return True se o cliente possui um sinistro, False senão
-     */
-    public String visualizarSinistro(String cliente) {
-        StringBuilder sb = new StringBuilder();
-        for (Sinistro s : listaSinistro) {
-            if (s.getCliente().getDocumento().equals(cliente)) {
-                sb.append(s.toString());
-            }
-        }
-        if (!sb.isEmpty()) {
-            return sb.toString();
-        }
-        return "\nO cliente não possui sinistros!\n";
-    }
 
-        /**
+    /**
      * Transforma uma ArrayList de sinistros em uma String
      * @return String
      */
     public String toStringListaSinistro() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < listaSinistro.size(); i++) {
+        for (int i = 0; i < listaSinistros.size(); i++) {
             sb.append("\n----- Sinistro "+(i+1)+" ----\n");
-            sb.append(listaSinistro.get(i).toString()+"\n");
+            sb.append(listaSinistros.get(i).toString()+"\n");
+        }
+        return sb.toString();
+    }
+
+    public String toStringIdSinistros() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID's do sinistros:\n");
+        for (int i = 0; i < listaSinistros.size(); i++) {
+            sb.append(listaSinistros.get(i).getId() + "\n");
+        }
+        return sb.toString();
+    }
+
+    public String toStringCpfCondutores() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CPF dos condutores:\n");
+        for (int i = 0; i < listaCondutores.size(); i++) {
+            sb.append(listaCondutores.get(i).getCPF() + "\n");
         }
         return sb.toString();
     }
@@ -120,5 +128,34 @@ public abstract class Seguro {
             }
         }
         return listaSinistros.add(new Sinistro(data, endereco, condutorSinistro, this));
+    }
+
+    public boolean adicionarCondutor(Condutor condutor) {
+        return listaCondutores.add(condutor);
+    }
+
+    public boolean removerCondutor(String documentoCondutor) {
+        for (int i = 0; i < listaCondutores.size(); i++) {
+            if (listaCondutores.get(i).getCPF().equals(documentoCondutor)) {
+                listaCondutores.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean removerSinistroPorId(int id) {
+        for (int i = 0; i < listaSinistros.size(); i++) {
+            if (listaSinistros.get(i).getId() == id) {
+                listaSinistros.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String toString() {
+        return "Data de início: "+this.dataInicio+"\nData de Fim: "+this.dataFim+"\nNome da seguradora: "+this.seguradora.getNome()+
+        toStringIdSinistros()+toStringCpfCondutores()+"\nValor Mensal: "+this.valorMensal;
     }
 }

@@ -1,22 +1,28 @@
 import java.util.Calendar;
+import java.util.Date;
 
 public class SeguroPJ extends Seguro {
     private Frota frota;
     private ClientePJ clientePJ;
 
-    public SeguroPF(Date dataInicio, Date dataFim, Seguradora seguradora, Frota frota, ClientePJ cliente) {
-        super(dataInicio, dataFim, seguradora);
+    public SeguroPJ(Date dataInicio, Date dataFim, Seguradora seguradora, Frota frota, ClientePJ cliente) {
+        super(dataInicio, dataFim, seguradora, cliente);
         this.frota = frota;
         this.clientePJ = cliente;
     }
 
-
+    @Override
     public ClientePJ getCliente() {
-        return cliente;
+        return clientePJ;
+    }
+    
+
+    public Frota getFrota() {
+        return frota;
     }
 
-    public void setCliente(ClientePJ cliente) {
-        this.cliente = cliente;
+    public void setFrota(Frota frota) {
+        this.frota = frota;
     }
 
     @Override
@@ -57,6 +63,11 @@ public class SeguroPJ extends Seguro {
             }
         }
         return false;
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString()+"\nCNPJ do cliente:"+this.clientePJ.getCNPJ()+"\nCódigo da Frota: "+this.frota.getCode()+frota.toStringPlacaVeiculos(); 
     }
 
 }

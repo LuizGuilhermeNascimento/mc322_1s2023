@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Condutor {
     
-    private String final cpf;
+    private final String cpf;
     private String nome;
     private String telefone;
     private String endereco;
@@ -41,7 +42,7 @@ public class Condutor {
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-    // TODO
+
     public ArrayList<Sinistro> getListaSinistros() {
         return listaSinistros;
     }
@@ -53,11 +54,11 @@ public class Condutor {
         return cpf;
     }
 
-    public Condutor(cpf, nome, telefone, endereco, email, dataNascimento) {
+    public Condutor(String cpf, String nome, String telefone, String endereco, String email, Date dataNascimento) {
 
         if (Validacao.validarCPF(cpf)) {
             this.cpf = cpf;
-        } else { this.cpf = "COF inválido!" }
+        } else { this.cpf = "CPF inválido!"; }
         this.nome = nome;
         this.telefone = telefone;
         this.endereco = endereco;
@@ -66,9 +67,37 @@ public class Condutor {
         this.listaSinistros = new ArrayList<Sinistro>();
     }
 
-    // TODO
     public boolean adicionarSinistro(Date data, String endereco, Veiculo veiculo, Seguro seguro) {
-        listaSinistros.add(new Sinistro(data, endereco, this, seguro))
+        listaSinistros.add(new Sinistro(data, endereco, this, seguro));
         return true;
+    }
+
+    public boolean adicionarSinistro(Sinistro sinistro) {
+        listaSinistros.add(sinistro);
+        return true;
+    }
+
+    public boolean removerSinistro(int id) {
+        for (Sinistro s : listaSinistros) {
+            if (s.getId() == id) {
+                listaSinistros.remove(id);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String toStringListaSinistros() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nLista de sinistros: \n");
+        for (Sinistro s : listaSinistros){
+            sb.append(s.toString()+"\n");
+        }
+        return sb.toString();
+    }
+
+    public String toString() {
+        return "\nCPF: "+this.cpf+"\nNome: "+this.nome+"\nTelefone: "+this.telefone+"\nEndereço: "+this.endereco+"Data de nascimento: "+
+        this.dataNascimento.toString()+toStringListaSinistros();
     }
 }

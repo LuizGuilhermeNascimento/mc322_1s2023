@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
@@ -271,11 +272,31 @@ public class AppMain {
         }
     }
 
+    public static void MenuSinistro(Scanner leitor, BancoDeSeguradoras bancoDeSeguradoras) {
+        System.out.print("Nome da Seguradora: ");
+        nomeSeguradora = leitor.nextLine();
+        if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+            System.out.print("Documento do cliente: ");
+            String clienteDocumento = leitor.next();
+            Veiculo veiculo = lerDadosVeiculo(leitor);
+            operacaoConcluida = MenuOperacoes.GERAR_SINISTRO.gerarSinistro(listaSeguradoras, nomeSeguradora, clienteDocumento, veiculo);
+        } else {
+            System.out.println("A seguradora inserida não está cadastrada!");
+        }
+        if (operacaoConcluida) {
+            System.out.println("\nOperação concluída com sucesso!");
+        } else {
+            System.out.println("\nErro! A operação não foi possível de ser concluída! Tente novamente!");
+        }
+    }
+
     /**
      * Função responsável pelo Menu Interativo (especialmente o menu principal)
      */
     public static void MenuOperacoesInterativo() throws Exception {
-        ArrayList<Seguradora> listaSeguradoras = new ArrayList<Seguradora>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        BancoDeSeguradoras bancoDeSeguradoras = new BancoDeSeguradoras();
         Scanner leitor = new Scanner(System.in);
         boolean sair = false;
         while (!sair) {
@@ -286,7 +307,7 @@ public class AppMain {
             System.out.println("[2] LISTAR");
             System.out.println("[3] EXCLUIR");
             System.out.println("[4] GERAR SINISTRO");
-            System.out.println("[5] TRANSFERIR SEGURO");
+            System.out.println("[5] GERAR SEGURO");
             System.out.println("[6] CALCULAR RECEITA DA SEGURADORA");
             System.out.println("[0] SAIR");
             System.out.println("\n------------------------------------------------\n");
@@ -296,40 +317,28 @@ public class AppMain {
             System.out.println("\n------------------------------------------------\n");
             switch (operacao) {
                 case 1:
-                    MenuCadastro(leitor, listaSeguradoras);
+                    MenuCadastro(leitor, bancoDeSeguradoras);
                     break;
                 case 2:
-                    MenuListagem(leitor, listaSeguradoras);
+                    MenuListagem(leitor, bancoDeSeguradoras);
                     break;
                 case 3:
-                    MenuExclusão(leitor, listaSeguradoras);
+                    MenuExclusão(leitor, bancoDeSeguradoras);
                     break;
                 case 4:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (MenuOperacoes.VERIFICACAO.existeSeguradora(listaSeguradoras, nomeSeguradora)) {
-                        System.out.print("Documento do cliente: ");
-                        String clienteDocumento = leitor.next();
-                        Veiculo veiculo = lerDadosVeiculo(leitor);
-                        operacaoConcluida = MenuOperacoes.GERAR_SINISTRO.gerarSinistro(listaSeguradoras, nomeSeguradora, clienteDocumento, veiculo);
-                    } else {
-                        System.out.println("A seguradora inserida não está cadastrada!");
-                    }
-                    if (operacaoConcluida) {
-                        System.out.println("\nOperação concluída com sucesso!");
-                    } else {
-                        System.out.println("\nErro! A operação não foi possível de ser concluída! Tente novamente!");
-                    }
+                    MenuSinistro(leitor, bancoDeSeguradoras);
                     break;
                 case 5:
                     System.out.print("Nome da Seguradora: ");
                     nomeSeguradora = leitor.nextLine();
-                    if (MenuOperacoes.VERIFICACAO.existeSeguradora(listaSeguradoras, nomeSeguradora)) {
-                        System.out.print("Documento do remetente: ");
-                        String clienteFonteDocumento = leitor.next();
-                        System.out.print("Documento do destinatário: ");
-                        String clienteDestinoDocumento = leitor.next();
-                        operacaoConcluida = MenuOperacoes.TRASNFERIR_SEGURO.transferirSeguro(listaSeguradoras, nomeSeguradora, clienteFonteDocumento, clienteDestinoDocumento);
+                    if(bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                        System.out.print("Data de início: ");
+                        Date dataInicio = sdf.parse(leitor.next());
+                        System.out.print("Data de fim: ");
+                        Date dataFim = sdf.parse(leitor.next());
+                        System.out.print("Documento do cliente: ");
+                        String documentoCliente = leitor.next();
+                        operacaoConcluida = MenuOperacoes.GERAR_SEGURO.gerarSeguro(bancoDeSeguradoras, nomeSeguradora, dataInicio, dataFim, documentoCliente);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
@@ -342,8 +351,8 @@ public class AppMain {
                 case 6:
                     System.out.print("Nome da Seguradora: ");
                     nomeSeguradora = leitor.nextLine();
-                    if (MenuOperacoes.VERIFICACAO.existeSeguradora(listaSeguradoras, nomeSeguradora)) {
-                        System.out.println("Receita: "+MenuOperacoes.CALCULAR_RECEITA_SEGURADORA.calcularReceitaSeguradora(listaSeguradoras, nomeSeguradora));
+                    if(bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                        System.out.println("Receita: "+MenuOperacoes.CALCULAR_RECEITA_SEGURADORA.calcularReceitaSeguradora(nomeSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
@@ -365,48 +374,94 @@ public class AppMain {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date dataExemplo = sdf.parse("18/04/2023");
         Date dataNascimentoCliente = sdf.parse("10/01/2005");
+        Date dataNascimentoCondutor1 = sdf.parse("12/02/1995");
+        Date dataNascimentoCondutor2 = sdf.parse("19/08/1999");
+        Date dataInicio = sdf.parse("03/12/2020");
+        Date dataFim = sdf.parse("01/01/2024");
+        Date dataSinistro = sdf.parse("06/05/2021");
 
         // Instanciação das classes
         Veiculo veiculo1 = new Veiculo("ABC1D23","Marca1","Modelo1" , 2023);
         Veiculo veiculo2 = new Veiculo("EFG1H23","Marca2","Modelo2", 2023);
-        ClientePF clientePF = new ClientePF("nome clientePF", "endereço clientePF",  dataExemplo,
-        "escolaridade", "genero", "classe econômica", "039.729.760-20", dataNascimentoCliente);
+        ClientePF clientePF = new ClientePF("nome clientePF", "endereço clientePF", "Ensino Médio completo",
+         "genero", "039.729.760-20", dataNascimentoCliente);
         ClientePJ clientePJ = new ClientePJ("Nome ficticio", "endereço clientePJ", "27.456.961/0001-61", dataExemplo, 20);
         Seguradora seguradora = new Seguradora("Seguradora Fictícia", "(99) 99999-9999", "emailficticio@gmail.com", "endereço seguradora");
+        Frota frota = new Frota();
+        Condutor condutor1 = new Condutor("940.153.620-12", "Condutor1", "(99)99999-9999", "Endereço condutor 1", "condutor1@gmail.com", dataNascimentoCondutor1);
+        Condutor condutor2 = new Condutor("540.626.080-49", "Condutor2", "(99)99999-9999", "Endereço condutor 2", "condutor2@gmail.com", dataNascimentoCondutor2);
+
         
+        SeguroPF seguroPF = new SeguroPF(dataInicio, dataFim, seguradora, veiculo1, clientePF);
+        SeguroPJ seguroPJ = new SeguroPJ(dataInicio, dataFim, seguradora, frota, clientePJ);
+
+
         System.out.println("\n------------------------------------------------\n");
-        System.out.println("FEEDBACK DO CADASTRO DOS VEÍCULOS NOS CLIENTES\n");
-        System.out.println("Para o cliente PF: " + clientePF.cadastrarVeiculo(veiculo1));
-        System.out.println("Para o cliente Pj: " +clientePJ.cadastrarVeiculo(veiculo2));
+        System.out.println("FEEDBACK DO CADASTRO DO VEÍCULO NO CLIENTE PF\n");
+        System.out.println(clientePF.cadastrarVeiculo(veiculo1));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DO CADASTRO DA FROTA NO CLIENTE PJ\n");
+        System.out.println(clientePJ.cadastrarFrota(frota));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DO CADASTRO DO SINISTRO DO CONDUTOR\n");
+        System.out.println(condutor1.adicionarSinistro(dataSinistro, "Endereço sinistro", veiculo2, seguroPJ));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DO CADASTRO E REMOÇÃO DE VEÍCULO NA FROTA\n");
+        System.out.println("Cadastro: "+frota.addVeiculo(veiculo1));
+        System.out.println("Remoção: "+frota.removeVeiculo(veiculo1));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DA GERAÇÃO DE SINISTRO NO SEGURO\n");
+        System.out.println(seguroPF.gerarSinistro(dataSinistro, "Endereço sinistro", "540.626.080-49"));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DO CÁLCULO DA FUNÇÃO calculaValor()\n");
+        System.out.println(seguroPF.calculaValor());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DA GERAÇÃO DE SEGURO NA SEGURADORA\n");
+        System.out.println("Para um cliente PF: "+seguradora.gerarSeguro(dataInicio, dataFim, veiculo2, clientePF));
+        System.out.println("Para um cliente PJ: "+seguradora.gerarSeguro(dataInicio, dataFim, frota, clientePJ));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("FEEDBACK DA GERAÇÃO DE SINISTRO NA SEGURADORA\n");
+        System.out.println(seguradora.getListaSeguros().get(0).gerarSinistro(dataSinistro, "Endereço sinistro", "940.153.620-12"));
         System.out.println("\n------------------------------------------------\n");
         System.out.println("FEEDBACK DO CADASTRO DOS CLIENTES PF E PJ NA SEGURADORA\n");
         System.out.println("Cliente PF: " + seguradora.cadastrarCliente(clientePF));
         System.out.println("Cliente PJ: " + seguradora.cadastrarCliente(clientePJ));
         System.out.println("\n------------------------------------------------\n");
-        System.out.println("FEEDBACK DA GERAÇÃO DE SINISTRO\n");
-        System.out.println("1º sinistro: "+seguradora.gerarSinistro(dataExemplo, "endereço fictício", veiculo1, clientePF));
-        System.out.println("2º sinistro: "+seguradora.gerarSinistro(dataExemplo, "endereço fictício", veiculo2, clientePJ));
-        System.out.println("\n------------------------------------------------\n");
-        System.out.println("LISTAGEM DOS CLIENTES\n");
-        ArrayList<Cliente> arrayClientePF = seguradora.listarClientes();
-        for (int i = 0; i < arrayClientePF.size(); i++) { 
-            System.out.println("\n----- Cliente "+(i+1)+" ----");
-            System.out.println(arrayClientePF.get(i).toString());
-        }
-        System.out.println("\n------------------------------------------------\n");
-        System.out.println("VISUALIZAÇÃO DO SINISTRO\n");
-        System.out.println(seguradora.visualizarSinistro(clientePF.getCpf()));
-        System.out.println("\n------------------------------------------------\n");
-        System.out.println("LISTAGEM DOS SINISTROS");
-        ArrayList<Sinistro> arraySinistro = seguradora.listarSinistros();
-        for (int i = 0; i < arraySinistro.size(); i++) {
-            System.out.println("\n----- Sinistro "+(i+1)+" ----");
-            System.out.println(arraySinistro.get(i).toString());
-        }
+        System.out.println("FEEDBACK DO CANCELAMENTO DE SINISTRO NA SEGURADORA\n");
+        System.out.println(seguradora.cancelarSeguro("039.729.760-20", "EFG1H23"));
         System.out.println("\n------------------------------------------------\n");
         System.out.println("CÁLCULO DA RECEITA DA SEGURADORA");
         System.out.println(seguradora.calcularReceita());
         System.out.println("\n------------------------------------------------\n");
+
+
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("MÉTODOS toString() DAS CLASSES INSTANCIADAS");
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE VEÍCULO: ");
+        System.out.println(veiculo1.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE CLIENTE PF: ");
+        System.out.println(clientePF.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE CLIENTE PJ: ");
+        System.out.println(clientePJ.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE FROTA: ");
+        System.out.println(frota.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE CONDUTOR: ");
+        System.out.println(condutor1.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE SEGURADORA: ");
+        System.out.println(seguradora.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE SEGURO: ");
+        System.out.println(seguroPF.toString());
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("CLASSE SINISTRO: ");
+        System.out.println(seguradora.getListaSeguros().get(0).getListaSinistros().get(0).toString());
+
         MenuOperacoesInterativo();
     }
 }

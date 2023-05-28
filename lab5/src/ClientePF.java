@@ -110,13 +110,18 @@ public class ClientePF extends Cliente {
         return this.listaVeiculos;
     }
 
-    public getVeiculoPorPlaca(String placa) {
+    public Veiculo getVeiculoPorPlaca(String placa) {
         for (Veiculo v : listaVeiculos) {
             if (v.getPlaca().equals(placa)) {
                 return v;
             }
         }
         return null;
+    }
+
+    @Override
+    public ArrayList<Veiculo> listaVeiculosCadastrados() {
+        return listaVeiculos;
     }
     
     /**
@@ -130,16 +135,7 @@ public class ClientePF extends Cliente {
     @Override
     public String toString() {
         return "Nome: " + this.nome + "\nEndereço: " + this.endereco+"\nEducação: " + this.educacao + "\nGênero: " + this.genero+
-        "\nCPF: "+this.cpf+"\nData de nascimento: "+this.dataNascimento+ "\nValor do Seguro: "+this.valorSeguro+listaVeiculosToString();
+        "\nCPF: "+this.cpf+"\nData de nascimento: "+this.dataNascimento+listaVeiculosToString();
     }
 
-    /**
-     * Calcula o score do cliente baseado na fórmula fornecida
-     */
-    @Override
-    public double calculaScore() {
-        int idadeCliente = calcularIdade(this.dataNascimento);
-
-        return CalcSeguro.VALOR_BASE.getValue() * CalcSeguro.FATOR_IDADE.calcularFator(idadeCliente) * this.listaVeiculos.size();
-    };
 }

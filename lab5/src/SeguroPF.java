@@ -1,3 +1,6 @@
+
+import java.util.Date;
+
 public class SeguroPF extends Seguro {
     private Veiculo veiculo;
     private ClientePF clientePF;
@@ -8,7 +11,7 @@ public class SeguroPF extends Seguro {
         this.clientePF = cliente;
     }
 
-    public Frota getVeiculo() {
+    public Veiculo getVeiculo() {
         return veiculo;
     }
 
@@ -16,12 +19,9 @@ public class SeguroPF extends Seguro {
         this.veiculo = veiculo;
     }
 
+    @Override
     public ClientePF getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(ClientePF cliente) {
-        this.cliente = cliente;
+        return clientePF;
     }
 
     @Override
@@ -57,4 +57,10 @@ public class SeguroPF extends Seguro {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+"\nCPF do cliente:"+this.clientePF.getCpf()+veiculo.toString(); 
+    }
+
 }

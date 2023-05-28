@@ -33,6 +33,10 @@ public abstract class Cliente {
         this.endereco = endereco;
     }
 
+    public ArrayList<Veiculo> listaVeiculosCadastrados() {
+        return null;
+    }
+
     /**
      * @stub
      */
@@ -41,7 +45,7 @@ public abstract class Cliente {
     }
 
     public String toString() {
-        String clienteString = "Nome: " + this.nome + "\nEndereço: " +this.endereco+ "\nValor do Seguro: "+this.valorSeguro;
+        String clienteString = "Nome: " + this.nome + "\nEndereço: " +this.endereco;
         return clienteString;
     }
 
