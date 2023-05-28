@@ -206,6 +206,17 @@ public enum MenuOperacoes {
         return sb.toString();
     }
 
+    public String listarSegurosPorSeguradora(BancoDeSeguradoras bancoDeSeguradoras, String nomeSeguradora) {
+        seguradora = bancoDeSeguradoras.getSeguradora(nomeSeguradora);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Lista de Seguros: "+"\n");
+        for (int i = 0; i < seguradora.getListaSeguros().size(); i++) {
+            sb.append("\n----- Frota "+(i+1)+" ----\n");
+            sb.append(seguradora.getListaSeguros().get(i).toString() + "\n");
+        }
+        return sb.toString();
+    }
+
     /////////////// OPERAÇÕES DE EXCLUSÃO ///////////////
 
     public boolean excluirCliente(BancoDeSeguradoras bancoDeSeguradoras, String nomeSeguradora, String clienteDocumento) {
@@ -347,6 +358,20 @@ public enum MenuOperacoes {
         }
         bancoDeSeguradoras.updateSeguradora(seguradora);
         return false;
+    }
+
+    public boolean gerarSeguroPF(BancoDeSeguradoras bancoDeSeguradoras, String nomeSeguradora, Date dataInicio, Date dataFim, Veiculo veiculo, ClientePF cliente) {
+        seguradora = bancoDeSeguradoras.getSeguradora(nomeSeguradora);
+        seguradora.gerarSeguro(dataInicio, dataFim, veiculo, cliente);
+        bancoDeSeguradoras.updateSeguradora(seguradora);
+        return true;
+    }
+
+    public boolean gerarSeguroPJ(BancoDeSeguradoras bancoDeSeguradoras, String nomeSeguradora, Date dataInicio, Date dataFim, ClientePJ cliente) {
+        seguradora = bancoDeSeguradoras.getSeguradora(nomeSeguradora);
+        seguradora.gerarSeguro(dataInicio, dataFim, new Frota(), cliente);
+        bancoDeSeguradoras.updateSeguradora(seguradora);
+        return true;
     }
 
     public double calcularReceitaSeguradora(BancoDeSeguradoras bancoDeSeguradoras, String nomeSeguradora) {

@@ -9,6 +9,7 @@ public class SeguroPJ extends Seguro {
         super(dataInicio, dataFim, seguradora, cliente);
         this.frota = frota;
         this.clientePJ = cliente;
+        this.valorMensal = calculaValor();
     }
 
     @Override

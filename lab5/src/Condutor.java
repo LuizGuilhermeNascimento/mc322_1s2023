@@ -97,7 +97,7 @@ public class Condutor {
     }
 
     public String toString() {
-        return "\nCPF: "+this.cpf+"\nNome: "+this.nome+"\nTelefone: "+this.telefone+"\nEndereço: "+this.endereco+"Data de nascimento: "+
+        return "\nCPF: "+this.cpf+"\nNome: "+this.nome+"\nTelefone: "+this.telefone+"\nEndereço: "+this.endereco+"\nData de nascimento: "+
         this.dataNascimento.toString()+toStringListaSinistros();
     }
 }

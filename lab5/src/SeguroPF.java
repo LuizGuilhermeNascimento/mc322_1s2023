@@ -9,6 +9,7 @@ public class SeguroPF extends Seguro {
         super(dataInicio, dataFim, seguradora, cliente);
         this.veiculo = veiculo;
         this.clientePF = cliente;
+        this.valorMensal = calculaValor();
     }
 
     public Veiculo getVeiculo() {
@@ -60,7 +61,7 @@ public class SeguroPF extends Seguro {
 
     @Override
     public String toString() {
-        return super.toString()+"\nCPF do cliente:"+this.clientePF.getCpf()+veiculo.toString(); 
+        return super.toString()+"\nCPF do cliente:"+this.clientePF.getCpf()+"\n"+veiculo.toString(); 
     }
 
 }

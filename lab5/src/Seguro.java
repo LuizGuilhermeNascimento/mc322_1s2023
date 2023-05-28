@@ -9,7 +9,7 @@ public abstract class Seguro {
     private Seguradora seguradora;
     protected ArrayList<Sinistro> listaSinistros;
     protected ArrayList<Condutor> listaCondutores;
-    private double valorMensal;
+    protected double valorMensal;
     private Cliente cliente;
 
     public Seguro(Date dataInicio, Date dataFim, Seguradora seguradora, Cliente cliente) {
@@ -19,7 +19,6 @@ public abstract class Seguro {
         this.seguradora = seguradora;
         this.listaSinistros = new ArrayList<Sinistro>();
         this.listaCondutores = new ArrayList<Condutor>();
-        this.valorMensal = calculaValor();
         this.cliente = cliente;
     }
 
@@ -124,10 +123,10 @@ public abstract class Seguro {
         for (Condutor c : listaCondutores) {
             if (c.getCPF().equals(cpf)) {
                 condutorSinistro = c;
-                break;
+                return listaSinistros.add(new Sinistro(data, endereco, condutorSinistro, this));
             }
         }
-        return listaSinistros.add(new Sinistro(data, endereco, condutorSinistro, this));
+        return false;
     }
 
     public boolean adicionarCondutor(Condutor condutor) {
@@ -155,7 +154,7 @@ public abstract class Seguro {
     }
 
     public String toString() {
-        return "Data de início: "+this.dataInicio+"\nData de Fim: "+this.dataFim+"\nNome da seguradora: "+this.seguradora.getNome()+
+        return "ID: "+this.id+"Data de início: "+this.dataInicio+"\nData de Fim: "+this.dataFim+"\nNome da seguradora: "+this.seguradora.getNome()+
         toStringIdSinistros()+toStringCpfCondutores()+"\nValor Mensal: "+this.valorMensal;
     }
 }
