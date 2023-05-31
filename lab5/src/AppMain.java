@@ -23,10 +23,8 @@ public class AppMain {
             case "PF":
                 System.out.print("Educacao: ");
                 String educacao = leitor.nextLine();
-                leitor.nextLine();
                 System.out.print("Gênero: ");
                 String genero = leitor.nextLine();
-                leitor.nextLine();
                 System.out.print("CPF: ");
                 String cpf = leitor.next();
                 System.out.print("Data de nascimento: ");
@@ -88,7 +86,7 @@ public class AppMain {
     public static void MenuCadastro(Scanner leitor, BancoDeSeguradoras bancoDeSeguradoras) throws Exception{
         boolean voltar = false;
         while(!voltar) {
-            String nomeSeguradora;
+            String cnpjSeguradora;
             boolean operacaoConcluida = false;
             System.out.println("\n---------- CADASTRO ----------\n");
             System.out.println("[1] CADASTRAR CLIENTE PF/PJ");
@@ -97,6 +95,7 @@ public class AppMain {
             System.out.println("[4] CADASTRAR SEGURADORA");
             System.out.println("[5] CADASTRAR FROTA");
             System.out.println("[6] CADASTRAR CONDUTOR");
+            System.out.println("[0] SAIR");
             System.out.println("\n------------------------------------------------\n");
             System.out.print("Digite o número do que você deseja cadastrar: ");
             int operacao = leitor.nextInt();
@@ -104,42 +103,45 @@ public class AppMain {
             System.out.println("\n------------------------------------------------\n");
             switch (operacao) {
                 case 1:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         Cliente cliente = lerDadosCliente(leitor);
-                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarCliente(bancoDeSeguradoras, nomeSeguradora, cliente);
+                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarCliente(bancoDeSeguradoras, cnpjSeguradora, cliente);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 2:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         Veiculo veiculo = lerDadosVeiculo(leitor);
                         System.out.print("Documento do cliente: ");
                         String clienteDocumento = leitor.next();
-                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarVeiculoNoCliente(bancoDeSeguradoras, nomeSeguradora, clienteDocumento, veiculo);
+                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarVeiculoNoCliente(bancoDeSeguradoras, cnpjSeguradora, clienteDocumento, veiculo);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 3:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         Veiculo veiculo = lerDadosVeiculo(leitor);
                         System.out.print("Código da frota: ");
                         String codeFrota = leitor.next();
-                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarVeiculoNaFrota(bancoDeSeguradoras, nomeSeguradora, codeFrota, veiculo);
+                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarVeiculoNaFrota(bancoDeSeguradoras, cnpjSeguradora, codeFrota, veiculo);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 4:
+                    System.out.print("CNPJ: ");
+                    String cnpj = leitor.next();
+                    leitor.nextLine();
                     System.out.print("Nome: ");
-                    nomeSeguradora = leitor.nextLine();
+                    String nomeSeguradora = leitor.nextLine();
                     System.out.print("Telefone: ");
                     String telefone = leitor.next();
                     System.out.print("Email: ");
@@ -147,29 +149,29 @@ public class AppMain {
                     leitor.nextLine();
                     System.out.print("Endereço: ");
                     String endereco = leitor.nextLine();
-                    operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarSeguradora(bancoDeSeguradoras, new Seguradora(nomeSeguradora, telefone, email, endereco));
+                    operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarSeguradora(bancoDeSeguradoras, new Seguradora(cnpj, nomeSeguradora, telefone, email, endereco));
                     break;
                 case 5:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.print("CNPJ do cliente: ");
                         String documentoCliente = leitor.next();
                         Frota novaFrota = new Frota();
-                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarFrota(bancoDeSeguradoras, nomeSeguradora, novaFrota, documentoCliente);
+                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarFrota(bancoDeSeguradoras, cnpjSeguradora, novaFrota, documentoCliente);
                         System.out.println("Código da frota cadastrada: "+novaFrota.getCode());
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 6:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         Condutor condutor = lerDadosCondutor(leitor);
                         System.out.print("ID do seguro: ");
                         int idSeguro = leitor.nextInt();
-                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarCondutor(bancoDeSeguradoras, nomeSeguradora, idSeguro, condutor);
+                        operacaoConcluida = MenuOperacoes.CADASTRAR.cadastrarCondutor(bancoDeSeguradoras, cnpjSeguradora, idSeguro, condutor);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
@@ -191,7 +193,7 @@ public class AppMain {
     public static void MenuListagem(Scanner leitor, BancoDeSeguradoras bancoDeSeguradoras) {
         boolean voltar = false;
         while(!voltar) {
-            String nomeSeguradora;
+            String cnpjSeguradora;
             System.out.println("\n---------- LISTAGEM ----------\n");
             System.out.println("[1] LISTAR CLIENTE (PF/PJ) POR SEGURADORA");
             System.out.println("[2] LISTAR SINISTROS POR SEGURADORA");
@@ -210,91 +212,91 @@ public class AppMain {
             System.out.println("\n------------------------------------------------\n");
             switch (operacao) {
                 case 1:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
-                        System.out.println(MenuOperacoes.LISTAR.listarClientesPorSeguradora(bancoDeSeguradoras, nomeSeguradora));
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
+                        System.out.println(MenuOperacoes.LISTAR.listarClientesPorSeguradora(bancoDeSeguradoras, cnpjSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 2:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
-                        System.out.println(MenuOperacoes.LISTAR.listarSinistrosPorSeguradora(bancoDeSeguradoras, nomeSeguradora));
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
+                        System.out.println(MenuOperacoes.LISTAR.listarSinistrosPorSeguradora(bancoDeSeguradoras, cnpjSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 3:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.println("Documento do cliente: ");
                         String clienteDocumento = leitor.next();
-                        System.out.println(MenuOperacoes.LISTAR.listarSinistroPorCliente(bancoDeSeguradoras, nomeSeguradora, clienteDocumento));
+                        System.out.println(MenuOperacoes.LISTAR.listarSinistroPorCliente(bancoDeSeguradoras, cnpjSeguradora, clienteDocumento));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                     
                 case 4:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.println("Documento do cliente: ");
                         String clienteDocumento = leitor.next();
-                        System.out.println(MenuOperacoes.LISTAR.listarVeiculoPorCliente(bancoDeSeguradoras, nomeSeguradora, clienteDocumento));
+                        System.out.println(MenuOperacoes.LISTAR.listarVeiculoPorCliente(bancoDeSeguradoras, cnpjSeguradora, clienteDocumento));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 5:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
-                        System.out.println(MenuOperacoes.LISTAR.listarVeiculoPorSeguradora(bancoDeSeguradoras, nomeSeguradora));
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
+                        System.out.println(MenuOperacoes.LISTAR.listarVeiculoPorSeguradora(bancoDeSeguradoras, cnpjSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 6:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.print("ID do seguro: ");
                         int idSeguro = leitor.nextInt();
-                        System.out.println(MenuOperacoes.LISTAR.listarCondutoresPorSeguro(bancoDeSeguradoras, nomeSeguradora, idSeguro));
+                        System.out.println(MenuOperacoes.LISTAR.listarCondutoresPorSeguro(bancoDeSeguradoras, cnpjSeguradora, idSeguro));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 7:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
-                        System.out.println(MenuOperacoes.LISTAR.listarFrotasPorSeguradora(bancoDeSeguradoras, nomeSeguradora));
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
+                        System.out.println(MenuOperacoes.LISTAR.listarFrotasPorSeguradora(bancoDeSeguradoras, cnpjSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 8:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.println("Documento do cliente: ");
                         String clienteDocumento = leitor.next();
-                        System.out.println(MenuOperacoes.LISTAR.listarFrotasPorCliente(bancoDeSeguradoras, nomeSeguradora, clienteDocumento));
+                        System.out.println(MenuOperacoes.LISTAR.listarFrotasPorCliente(bancoDeSeguradoras, cnpjSeguradora, clienteDocumento));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 9:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.next();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
-                        System.out.println(MenuOperacoes.LISTAR.listarSegurosPorSeguradora(bancoDeSeguradoras, nomeSeguradora));
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.next();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
+                        System.out.println(MenuOperacoes.LISTAR.listarSegurosPorSeguradora(bancoDeSeguradoras, cnpjSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
@@ -312,7 +314,7 @@ public class AppMain {
     public static void MenuExclusão(Scanner leitor, BancoDeSeguradoras bancoDeSeguradoras) {
         boolean voltar = false;
         while(!voltar) {
-            String nomeSeguradora;
+            String cnpjSeguradora;
             boolean operacaoConcluida = false;
             System.out.println("\n---------- EXCLUSÃO ----------\n");
             System.out.println("[1] EXCLUIR CLIENTE");
@@ -328,20 +330,20 @@ public class AppMain {
             System.out.println("\n------------------------------------------------\n");
             switch (operacao) {
                 case 1:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.print("Documento do cliente: ");
                         String clienteDocumento = leitor.next();
-                        operacaoConcluida = MenuOperacoes.EXCLUIR.excluirCliente(bancoDeSeguradoras, nomeSeguradora, clienteDocumento);
+                        operacaoConcluida = MenuOperacoes.EXCLUIR.excluirCliente(bancoDeSeguradoras, cnpjSeguradora, clienteDocumento);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 2:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.println("Deseja excluir um veículo de um cliente PF ou PJ? [PF/PJ]");
                         String tipoCliente = leitor.next();
                         System.out.print("Documento do cliente: ");
@@ -350,11 +352,11 @@ public class AppMain {
                         String placa = leitor.next();
                         switch (tipoCliente) {
                             case "PF":
-                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirVeiculoPorClientePF(bancoDeSeguradoras, nomeSeguradora, clienteDocumento, placa);
+                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirVeiculoPorClientePF(bancoDeSeguradoras, cnpjSeguradora, clienteDocumento, placa);
                             case "PJ":
                                 System.out.print("Código da frota: ");
                                 String codeFrota = leitor.next();
-                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirVeiculoPorClientePJ(bancoDeSeguradoras, nomeSeguradora, codeFrota, clienteDocumento, placa);
+                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirVeiculoPorClientePJ(bancoDeSeguradoras, cnpjSeguradora, codeFrota, clienteDocumento, placa);
                         }
     
                     } else {
@@ -362,31 +364,31 @@ public class AppMain {
                     }
                     break;
                 case 3:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.print("Código da frota: ");
                         String codeFrota = leitor.next();
-                        operacaoConcluida = MenuOperacoes.EXCLUIR.excluirFrota(bancoDeSeguradoras, nomeSeguradora, codeFrota);
+                        operacaoConcluida = MenuOperacoes.EXCLUIR.excluirFrota(bancoDeSeguradoras, cnpjSeguradora, codeFrota);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 4:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.print("Documento do condutor: ");
                         String documentoCondutor = leitor.next();
-                        operacaoConcluida = MenuOperacoes.EXCLUIR.excluirCondutor(bancoDeSeguradoras, nomeSeguradora, documentoCondutor);
+                        operacaoConcluida = MenuOperacoes.EXCLUIR.excluirCondutor(bancoDeSeguradoras, cnpjSeguradora, documentoCondutor);
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
                     break;
                 case 5:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
                         System.out.println("Deseja excluir sinistro de um condutor ou de um seguro? [C/S]");
                         String tipoSinistro = leitor.next();
                         System.out.print("ID do sinistro: ");
@@ -395,11 +397,11 @@ public class AppMain {
                             case "C":
                                 System.out.print("Documento do condutor: ");
                                 String documentoCondutor = leitor.next();
-                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirSinistroPorCondutor(bancoDeSeguradoras, nomeSeguradora, documentoCondutor, idSinistro);
+                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirSinistroPorCondutor(bancoDeSeguradoras, cnpjSeguradora, documentoCondutor, idSinistro);
                             case "S":
                                 System.out.print("ID do seguro: ");
                                 int idSeguro = leitor.nextInt();
-                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirSinistroPorSeguro(bancoDeSeguradoras, nomeSeguradora, idSinistro, idSeguro);
+                                operacaoConcluida = MenuOperacoes.EXCLUIR.excluirSinistroPorSeguro(bancoDeSeguradoras, cnpjSeguradora, idSinistro, idSeguro);
                         }
     
                     } else {
@@ -418,12 +420,12 @@ public class AppMain {
     }
 
     public static void MenuSinistro(Scanner leitor, BancoDeSeguradoras bancoDeSeguradoras) throws Exception{
-        System.out.print("Nome da Seguradora: ");
-        String nomeSeguradora = leitor.nextLine();
+        System.out.print("CNPJ da Seguradora: ");
+        String cnpjSeguradora = leitor.nextLine();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         boolean operacaoConcluida = false;
 
-        if (bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+        if (bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
             System.out.print("Data: ");
             Date data = sdf.parse(leitor.next());
             System.out.print("Endereço: ");
@@ -435,7 +437,7 @@ public class AppMain {
             System.out.print("Placa do veículo: ");
             String placa = leitor.next();
 
-            operacaoConcluida = MenuOperacoes.GERAR_SINISTRO.gerarSinistro(bancoDeSeguradoras, nomeSeguradora, data, endereco, documentoCondutor, idSeguro, placa);
+            operacaoConcluida = MenuOperacoes.GERAR_SINISTRO.gerarSinistro(bancoDeSeguradoras, cnpjSeguradora, data, endereco, documentoCondutor, idSeguro, placa);
         } else {
             System.out.println("A seguradora inserida não está cadastrada!");
         }
@@ -450,10 +452,10 @@ public class AppMain {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         boolean operacaoConcluida = false;
-        System.out.print("Nome da Seguradora: ");
-        String nomeSeguradora = leitor.nextLine();
+        System.out.print("CNPJ da Seguradora: ");
+        String cnpjSeguradora = leitor.nextLine();
 
-        if(bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
+        if(bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
             System.out.print("Data de início: ");
             Date dataInicio = sdf.parse(leitor.next());
             System.out.print("Data de fim: ");
@@ -465,10 +467,10 @@ public class AppMain {
                 case "PF":
                 Veiculo veiculo = lerDadosVeiculo(leitor);
                 cliente = lerDadosCliente(leitor);
-                operacaoConcluida = MenuOperacoes.GERAR_SEGURO.gerarSeguroPF(bancoDeSeguradoras, nomeSeguradora, dataInicio, dataFim, veiculo, (ClientePF)cliente);
+                operacaoConcluida = MenuOperacoes.GERAR_SEGURO.gerarSeguroPF(bancoDeSeguradoras, cnpjSeguradora, dataInicio, dataFim, veiculo, (ClientePF)cliente);
                 case "PJ":
                 cliente = lerDadosCliente(leitor);
-                operacaoConcluida = MenuOperacoes.GERAR_SEGURO.gerarSeguroPJ(bancoDeSeguradoras, nomeSeguradora, dataInicio, dataFim,(ClientePJ)cliente);
+                operacaoConcluida = MenuOperacoes.GERAR_SEGURO.gerarSeguroPJ(bancoDeSeguradoras, cnpjSeguradora, dataInicio, dataFim,(ClientePJ)cliente);
             }
             
         } else {
@@ -490,7 +492,7 @@ public class AppMain {
         Scanner leitor = new Scanner(System.in);
         boolean sair = false;
         while (!sair) {
-            String nomeSeguradora;
+            String cnpjSeguradora;
             boolean operacaoConcluida = false;
             System.out.println("\n---------- MENU PRINCIPAL ----------\n");
             System.out.println("[1] CADASTRAR");
@@ -522,10 +524,10 @@ public class AppMain {
                     MenuSeguro(leitor, bancoDeSeguradoras);
                     break;
                 case 6:
-                    System.out.print("Nome da Seguradora: ");
-                    nomeSeguradora = leitor.nextLine();
-                    if(bancoDeSeguradoras.contemSeguradora(nomeSeguradora)) {
-                        System.out.println("Receita: "+MenuOperacoes.CALCULAR_RECEITA_SEGURADORA.calcularReceitaSeguradora(bancoDeSeguradoras, nomeSeguradora));
+                    System.out.print("CNPJ da Seguradora: ");
+                    cnpjSeguradora = leitor.nextLine();
+                    if(bancoDeSeguradoras.contemSeguradora(cnpjSeguradora)) {
+                        System.out.println("Receita: "+MenuOperacoes.CALCULAR_RECEITA_SEGURADORA.calcularReceitaSeguradora(bancoDeSeguradoras, cnpjSeguradora));
                     } else {
                         System.out.println("A seguradora inserida não está cadastrada!");
                     }
@@ -559,7 +561,7 @@ public class AppMain {
         ClientePF clientePF = new ClientePF("nome clientePF", "endereço clientePF", "Ensino Médio completo",
          "genero", "039.729.760-20", dataNascimentoCliente);
         ClientePJ clientePJ = new ClientePJ("Nome ficticio", "endereço clientePJ", "27.456.961/0001-61", dataExemplo, 20);
-        Seguradora seguradora = new Seguradora("Seguradora Fictícia", "(99) 99999-9999", "emailficticio@gmail.com", "endereço seguradora");
+        Seguradora seguradora = new Seguradora("11.754.368/0001-61", "Seguradora Fictícia", "(99) 99999-9999", "emailficticio@gmail.com", "endereço seguradora");
         Frota frota = new Frota();
         Condutor condutor1 = new Condutor("940.153.620-12", "Condutor1", "(99)99999-9999", "Endereço condutor 1", "condutor1@gmail.com", dataNascimentoCondutor1);
         Condutor condutor2 = new Condutor("540.626.080-49", "Condutor2", "(99)99999-9999", "Endereço condutor 2", "condutor2@gmail.com", dataNascimentoCondutor2);
@@ -583,7 +585,7 @@ public class AppMain {
         System.out.println("\n------------------------------------------------\n");
         System.out.println("FEEDBACK DA GERAÇÃO DE SINISTRO NO SEGURO\n");
         // adiciona um condutor ao seguro
-        seguroPF.adicionarCondutor(condutor2);
+        seguroPF.autorizarCondutor(condutor2);
         System.out.println(seguroPF.gerarSinistro(dataSinistro, "Endereço sinistro", "540.626.080-49"));
         System.out.println("\n------------------------------------------------\n");
         System.out.println("FEEDBACK DO CÁLCULO DA FUNÇÃO calculaValor()\n");
@@ -595,7 +597,7 @@ public class AppMain {
         System.out.println("\n------------------------------------------------\n");
         System.out.println("FEEDBACK DA GERAÇÃO DE SINISTRO NA SEGURADORA\n");
         // adiciona um condutor ao seguro
-        seguradora.getListaSeguros().get(0).adicionarCondutor(condutor2);
+        seguradora.getListaSeguros().get(0).autorizarCondutor(condutor2);
         // gera um sinistro relacionado ao condutor previamente adicionado
         System.out.println(seguradora.getListaSeguros().get(0).gerarSinistro(dataSinistro, "Endereço sinistro", "540.626.080-49"));
         System.out.println("\n------------------------------------------------\n");

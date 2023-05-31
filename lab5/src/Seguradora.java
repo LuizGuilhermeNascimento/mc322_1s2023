@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Seguradora {
     
+    private String cnpj;
     private String nome;
     private String telefone;
     private String email;
@@ -12,9 +13,14 @@ public class Seguradora {
     private ArrayList<Cliente> listaClientes;
     
     // construtor
-    public Seguradora(String nome, String telefone, String email, String endereco) {
+    public Seguradora(String cnpj, String nome, String telefone, String email, String endereco) {
         listaSeguros = new ArrayList<Seguro>();
         listaClientes = new ArrayList<Cliente>();
+
+        if (Validacao.validarCNPJ(cnpj)) {
+            this.cnpj = cnpj;
+        } else { this.cnpj = "CNPJ inválido!"; }
+
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
@@ -24,6 +30,10 @@ public class Seguradora {
     // getters e setters
     public String getNome() {
         return nome;
+    }
+
+    public String getCNPJ() {
+        return cnpj;
     }
 
     public void setNome(String nome) {

@@ -45,28 +45,6 @@ public class SeguroPJ extends Seguro {
     }
 
     @Override
-    public boolean desautorizarCondutor(String cpf) {
-        for (Condutor c : listaCondutores) {
-            if (c.getCPF().equals(cpf)) {
-                // lógica de negócio
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean autorizarCondutor(String cpf) {
-        for (Condutor c : listaCondutores) {
-            if (c.getCPF().equals(cpf)) {
-                // lógica de negócio
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    @Override
     public String toString() {
         return super.toString()+"\nCNPJ do cliente:"+this.clientePJ.getCNPJ()+"\nCódigo da Frota: "+this.frota.getCode()+frota.toStringPlacaVeiculos(); 
     }

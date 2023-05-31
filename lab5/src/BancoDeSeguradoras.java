@@ -10,8 +10,8 @@ public class BancoDeSeguradoras {
         this.hash = new HashMap<String, Seguradora>();
     }
 
-    public boolean contemSeguradora(String nomeSeguradora) {
-        return hash.containsKey(nomeSeguradora);
+    public boolean contemSeguradora(String cnpjSeguradora) {
+        return hash.containsKey(cnpjSeguradora);
     }
     /**
      * Atualiza uma seguradora no hash
@@ -19,11 +19,11 @@ public class BancoDeSeguradoras {
      * Caso não esteja, adiciona no hash
      */
     public void updateSeguradora(Seguradora seguradora) {
-        hash.put(seguradora.getNome(), seguradora);
+        hash.put(seguradora.getCNPJ(), seguradora);
     }
 
-    public Seguradora getSeguradora(String nomeSeguradora) {
-        return hash.get(nomeSeguradora);
+    public Seguradora getSeguradora(String cnpjSeguradora) {
+        return hash.get(cnpjSeguradora);
     } 
 
 }

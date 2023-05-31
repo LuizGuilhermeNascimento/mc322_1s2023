@@ -32,6 +32,10 @@ public abstract class Seguro {
     public Cliente getCliente() {
         return cliente;
     }
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        this.valorMensal = calculaValor();
+    }
     public int getId() {
         return id;
     }
@@ -70,15 +74,22 @@ public abstract class Seguro {
     /**
      * @stub
      */
-    public boolean desautorizarCondutor(String cpf) {
-        return true;
+    public boolean desautorizarCondutor(String documentoCondutor) {
+        
+        for (int i = 0; i < listaCondutores.size(); i++) {
+            if (listaCondutores.get(i).getCPF().equals(documentoCondutor)) {
+                listaCondutores.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * @stub
      */
-    public boolean autorizarCondutor(String cpf) {
-        return true;
+    public boolean autorizarCondutor(Condutor condutor) {
+        return listaCondutores.add(condutor);
     }
     /**
      * @stub
@@ -131,25 +142,6 @@ public abstract class Seguro {
             if (c.getCPF().equals(cpf)) {
                 condutorSinistro = c;
                 return listaSinistros.add(new Sinistro(data, endereco, condutorSinistro, this));
-            }
-        }
-        return false;
-    }
-    /**
-     * Adiciona um condutor recebendo um objeto Condutor
-     */
-    public boolean adicionarCondutor(Condutor condutor) {
-        return listaCondutores.add(condutor);
-    }
-
-    /**
-     * Remove um condutor recebendo o documento do condutor
-     */
-    public boolean removerCondutor(String documentoCondutor) {
-        for (int i = 0; i < listaCondutores.size(); i++) {
-            if (listaCondutores.get(i).getCPF().equals(documentoCondutor)) {
-                listaCondutores.remove(i);
-                return true;
             }
         }
         return false;

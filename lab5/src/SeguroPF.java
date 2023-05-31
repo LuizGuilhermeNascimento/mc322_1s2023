@@ -39,28 +39,6 @@ public class SeguroPF extends Seguro {
     }
 
     @Override
-    public boolean desautorizarCondutor(String cpf) {
-        for (Condutor c : listaCondutores) {
-            if (c.getCPF().equals(cpf)) {
-                // lógica de negócio
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean autorizarCondutor(String cpf) {
-        for (Condutor c : listaCondutores) {
-            if (c.getCPF().equals(cpf)) {
-                // lógica de negócio
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public String toString() {
         return super.toString()+"\nCPF do cliente:"+this.clientePF.getCpf()+"\n"+veiculo.toString(); 
     }
