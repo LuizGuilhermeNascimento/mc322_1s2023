@@ -6,8 +6,11 @@ public class ClientePJ extends Cliente{
     private Date dataFundacao;
     private ArrayList<Frota> listaFrotas;
     private int qtdeFuncionarios;
+    private String telefone;
+    private String email;
 
-    public ClientePJ(String nome, String endereco, String cnpj, Date dataFundacao, int qtdeFuncionarios) {
+    public ClientePJ(String nome, String endereco, String cnpj, Date dataFundacao, int qtdeFuncionarios,
+                    String telefone, String email) {
 
         super( nome , endereco);
         if (Validacao.validarCNPJ(cnpj)) {
@@ -18,6 +21,8 @@ public class ClientePJ extends Cliente{
         this.dataFundacao = dataFundacao;
         this.listaFrotas = new ArrayList<Frota>();
         this.qtdeFuncionarios = qtdeFuncionarios;
+        this.telefone = telefone;
+        this.email = email;
     }
 
     // getters e setters
@@ -49,6 +54,22 @@ public class ClientePJ extends Cliente{
         }
         listaFrotas.add(frota);
         return true;
+    }
+    
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

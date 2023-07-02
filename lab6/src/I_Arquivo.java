@@ -1,5 +1,5 @@
-public interface I_Arquivo {
-    public boolean inicializarArquivo(String filePath, String header);
-    public boolean gravarArquivo(String filePath, Seguro seguro);
-    public String lerArquivo();
+public interface I_Arquivo<T> {
+    public boolean gravarArquivo(T t);
+    public String lerArquivo(String identificador);
+    public String converterDadosParaString(T t);
 }

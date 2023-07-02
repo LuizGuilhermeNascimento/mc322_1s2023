@@ -1,15 +1,8 @@
 import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.StringBuilder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Seguradora implements I_Arquivo{
+public class Seguradora {
     
     private String cnpj;
     private String nome;
@@ -18,6 +11,13 @@ public class Seguradora implements I_Arquivo{
     private String endereco;
     private ArrayList<Seguro> listaSeguros;
     private ArrayList<Cliente> listaClientes;
+    private ArquivoClientePF arquivoClientePF;
+    private ArquivoClientePJ arquivoClientePJ;
+    private ArquivoCondutor arquivoCondutor;
+    private ArquivoFrota arquivoFrota;
+    private ArquivoSeguro arquivoSeguro;
+    private ArquivoSinistro arquivoSinistro;
+    private ArquivoVeiculo arquivoVeiculo;
     
     // construtor
     public Seguradora(String cnpj, String nome, String telefone, String email, String endereco) {
@@ -32,6 +32,13 @@ public class Seguradora implements I_Arquivo{
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
+        arquivoClientePF = new ArquivoClientePF();
+        arquivoClientePJ = new ArquivoClientePJ();
+        arquivoCondutor = new ArquivoCondutor();
+        arquivoFrota = new ArquivoFrota();
+        arquivoSeguro = new ArquivoSeguro();
+        arquivoVeiculo = new ArquivoVeiculo();
+        arquivoSinistro = new ArquivoSinistro();
     }
 
     // getters e setters
@@ -322,85 +329,38 @@ public class Seguradora implements I_Arquivo{
         return receita;
     }
 
-    public boolean gravarArquivo(String filePath, Seguro seguro) {
-
-        File file = new File(filePath);
-        
-        if (!file.isFile()) {
-            System.out.println("Não é um arquivo!");
-            return false;
+    public boolean gravarDados(Object o, tiposArquivos tipo) {
+        if (tipo == tiposArquivos.CLIENTE_PF) {
+            return arquivoClientePF.gravarArquivo((ClientePF)o);
+        } else if (tipo == tiposArquivos.CLIENTE_PJ) {
+            return arquivoClientePJ.gravarArquivo((ClientePJ)o);
+        } else if (tipo == tiposArquivos.CONDUTOR) {
+            return arquivoCondutor.gravarArquivo((Condutor)o);
+        } else if (tipo == tiposArquivos.FROTA) {
+            return arquivoFrota.gravarArquivo((Frota)o);
+        } else if (tipo == tiposArquivos.SEGURO) {
+            return arquivoSeguro.gravarArquivo((Seguro)o);
+        } else if (tipo == tiposArquivos.VEICULO) {
+            return arquivoVeiculo.gravarArquivo((Veiculo)o);
         }
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-                long id = reader.lines().count();
-                
-                StringBuilder listaSinistros = new StringBuilder();
-                
-                for (int i = 0; i < seguro.getListaSinistros().size(); i++) {
-                    listaSinistros.append(seguro.getListaSinistros().get(i).getId());
-                    if (i < seguro.getListaSinistros().size()-1) {
-                        listaSinistros.append(",");
-                    }
-                }
-
-                StringBuilder listaCondutores = new StringBuilder();
-
-                for (int i = 0; i < seguro.getListaCondutores().size(); i++) {
-                    listaCondutores.append(seguro.getListaCondutores().get(i).getCPF());
-                    if (i < seguro.getListaCondutores().size()-1) {
-                        listaCondutores.append(",");
-                    }
-                }
-
-                SimpleDateFormat sdf = new SimpleDateFormat();
-                String dataInicio = sdf.format(seguro.getDataInicio()).split(" ")[0];
-                String dataFim = sdf.format(seguro.getDataFim()).split(" ")[0];
-                String newLine = String.format("%d,%s,%s,%s,%s,%s,%f\n", id, dataInicio, dataFim,
-                seguro.getSeguradora().getNome(), listaSinistros.toString(), listaCondutores.toString(), seguro.getValorMensal());
-
-                writer.write(newLine);
-                writer.close();
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            reader.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return true;
+        return arquivoSinistro.gravarArquivo((Sinistro)o);
     }
 
-    public boolean inicializarArquivo(String filePath, String header) {
-
-        File file = new File(filePath);
-
-        if (file.exists()) {
-            return false;  
+    public String lerDados(String identificador, tiposArquivos tipo) {
+        if (tipo == tiposArquivos.CLIENTE_PF) {
+            return arquivoClientePF.lerArquivo(identificador);
+        } else if (tipo == tiposArquivos.CLIENTE_PJ) {
+            return arquivoClientePJ.lerArquivo(identificador);
+        } else if (tipo == tiposArquivos.CONDUTOR) {
+            return arquivoCondutor.lerArquivo(identificador);
+        } else if (tipo == tiposArquivos.FROTA) {
+            return arquivoFrota.lerArquivo(identificador);
+        } else if (tipo == tiposArquivos.SEGURO) {
+            return arquivoSeguro.lerArquivo(identificador);
+        } else if (tipo == tiposArquivos.VEICULO) {
+            return arquivoVeiculo.lerArquivo(identificador);
         }
-        System.out.println("O arquivo não existe!");
-        try {
-            boolean arquivoCriado = file.createNewFile();
-            if (!arquivoCriado) { 
-                System.out.println("O arquivo não foi possível de ser criado");
-                return false; 
-            }
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-            
-            writer.write(header);
-            writer.newLine();
-            writer.close();
-
-        } catch(IOException ex) {
-            return false;
-        }
-        return true;
+        return arquivoSinistro.lerArquivo(identificador);
     }
 
-    public String lerArquivo() {
-        return "";
-    }
 }

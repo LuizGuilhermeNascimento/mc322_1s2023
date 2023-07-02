@@ -8,10 +8,14 @@ public class ClientePF extends Cliente {
     private String genero;
     private final String cpf;
     private Date dataNascimento;
+    private String telefone;
+    private String email;
+    private String sexo;
     private ArrayList<Veiculo> listaVeiculos;
 
     public ClientePF(String nome , String endereco ,
-            String educacao , String genero, String cpf, Date dataNascimento) {
+            String educacao , String genero, String cpf, Date dataNascimento,
+            String telefone, String email, String sexo) {
 
         super( nome , endereco);
         if (Validacao.validarCPF(cpf)) {
@@ -23,6 +27,9 @@ public class ClientePF extends Cliente {
         this.genero = genero;
         this.dataNascimento = dataNascimento;
         this.listaVeiculos = new ArrayList<Veiculo>();
+        this.telefone = telefone;
+        this.email = email;
+        this.sexo = sexo;
     }
 
     // getters e setters
@@ -52,6 +59,30 @@ public class ClientePF extends Cliente {
 
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+    
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     public int calcularIdade(Date dataNascimento) {
