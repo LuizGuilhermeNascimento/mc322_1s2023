@@ -26,8 +26,7 @@ public class Teste {
         Sinistro sinistro = new Sinistro(dataFim, "endereco", condutor, seguroPF);
 
         // teste
-        ArquivoVeiculo arquivoVeiculo = new ArquivoVeiculo();
-        System.out.println(arquivoVeiculo.gravarArquivo(veiculo1));
+        System.out.println(seguradora.lerDados("21488869839", tiposArquivos.CLIENTE_PF));
 
 
     }

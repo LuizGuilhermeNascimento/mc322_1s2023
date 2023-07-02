@@ -15,7 +15,6 @@ public class ArquivoClientePF implements I_Arquivo<ClientePF>{
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
         
             String cliente = converterDadosParaString(clientePF);
-            System.out.println("entrou");
 
             writer.write(cliente);
             writer.newLine();
@@ -34,7 +33,8 @@ public class ArquivoClientePF implements I_Arquivo<ClientePF>{
             while ((linha = reader.readLine()) != null) {
                 if (i >= 1) {
                     String[] campos = linha.split(",");
-                    if (campos[0].equals(cpf)) {
+                    String regex = "[^0-9]";
+                    if (campos[0].equals(cpf.replaceAll(regex, ""))) {
                         return linha;
                     }
                 }
@@ -59,7 +59,7 @@ public class ArquivoClientePF implements I_Arquivo<ClientePF>{
         }
 
         return clientePF.getCpf().replaceAll(regex, "") + "," + clientePF.getNome() + "," + clientePF.getTelefone() + "," +
-        clientePF.getEndereco() + "," + clientePF.getEmail() + "," + clientePF.getSexo() + "," +
+        clientePF.getEndereco() + "," + clientePF.getEmail() + "," + clientePF.getSexo() + "," + clientePF.getEducacao() + "," +
         dataNascimento + "," + veiculoCliente;
     }
 }

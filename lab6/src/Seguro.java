@@ -60,7 +60,7 @@ public abstract class Seguro {
     public double getValorMensal() {
         return valorMensal;
     }
-    public void setValorMensal(int valorMensal) {
+    public void setValorMensal(double valorMensal) {
         this.valorMensal = valorMensal;
     }
 

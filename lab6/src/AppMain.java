@@ -11,6 +11,8 @@ public class AppMain {
     public static Cliente lerDadosCliente(Scanner leitor) throws Exception{
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String email = "";
+        String telefone = "";
 
         System.out.print("Deseja cadastrar um cliente PF ou PJ? [PF/PJ]");
         String tipoCliente = leitor.next();
@@ -29,7 +31,11 @@ public class AppMain {
                 String cpf = leitor.next();
                 System.out.print("Data de nascimento: ");
                 String dataNascimento = leitor.next();
-                return new ClientePF(nome, endereco, educacao, genero, cpf, sdf.parse(dataNascimento));
+                System.out.print("Telefone: ");
+                telefone = leitor.next();
+                System.out.print("Email: ");
+                email = leitor.next();
+                return new ClientePF(nome, endereco, educacao, genero, cpf, sdf.parse(dataNascimento), telefone, email);
             case "PJ":
                 System.out.print("CNPJ: ");
                 String cnpj = leitor.next();
@@ -37,7 +43,11 @@ public class AppMain {
                 String dataFundacao = leitor.next();
                 System.out.print("Quantidade de funcionários: ");
                 int qtdeFuncionarios = leitor.nextInt();
-                return new ClientePJ(nome, endereco, cnpj, sdf.parse(dataFundacao), qtdeFuncionarios);
+                System.out.print("Telefone: ");
+                telefone = leitor.next();
+                System.out.print("Email: ");
+                email = leitor.next();
+                return new ClientePJ(nome, endereco, cnpj, sdf.parse(dataFundacao), qtdeFuncionarios, telefone, email);
         }
         return null;
     }
@@ -559,8 +569,8 @@ public class AppMain {
         Veiculo veiculo1 = new Veiculo("ABC1D23","Marca1","Modelo1" , 2023);
         Veiculo veiculo2 = new Veiculo("EFG1H23","Marca2","Modelo2", 2023);
         ClientePF clientePF = new ClientePF("nome clientePF", "endereço clientePF", "Ensino Médio completo",
-         "genero", "039.729.760-20", dataNascimentoCliente);
-        ClientePJ clientePJ = new ClientePJ("Nome ficticio", "endereço clientePJ", "27.456.961/0001-61", dataExemplo, 20);
+         "genero", "039.729.760-20", dataNascimentoCliente, "(11) 12345-6789", "email@gmail.com");
+        ClientePJ clientePJ = new ClientePJ("Nome ficticio", "endereço clientePJ", "27.456.961/0001-61", dataExemplo, 20, "(11) 12345-6789", "email@gmail.com");
         Seguradora seguradora = new Seguradora("11.754.368/0001-61", "Seguradora Fictícia", "(99) 99999-9999", "emailficticio@gmail.com", "endereço seguradora");
         Frota frota = new Frota();
         Condutor condutor1 = new Condutor("940.153.620-12", "Condutor1", "(99)99999-9999", "Endereço condutor 1", "condutor1@gmail.com", dataNascimentoCondutor1);
@@ -642,6 +652,42 @@ public class AppMain {
         // gera um sinistro para que seja possível chamar o método toString()
         seguradora.getListaSeguros().get(0).gerarSinistro(dataSinistro, "Endereço sinistro", "540.626.080-49");
         System.out.println(seguradora.getListaSeguros().get(0).getListaSinistros().get(0).toString());
+
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nOPERAÇÕES EM ARQUIVOS\n");
+        System.out.println("\n------------------------------------------------\n");
+
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nREGISTRO DE UM CLIENTE PF: ");
+        System.out.println(seguradora.gravarDados(clientePF, tiposArquivos.CLIENTE_PF));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nREGISTRO DE UM CLIENTE PJ: ");
+        System.out.println(seguradora.gravarDados(clientePJ, tiposArquivos.CLIENTE_PJ));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nREGISTRO DE UM CONDUTOR: ");
+        System.out.println(seguradora.gravarDados(condutor1, tiposArquivos.CONDUTOR));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nREGISTRO DE UMA FROTA: ");
+        System.out.println(seguradora.gravarDados(frota, tiposArquivos.FROTA));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nREGISTRO DE UM VEICULO: ");
+        System.out.println(seguradora.gravarDados(veiculo1, tiposArquivos.VEICULO));
+
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nLEITURA DE UM CLIENTE PF: ");
+        System.out.println(seguradora.lerDados("039.729.760-20", tiposArquivos.CLIENTE_PF));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nLEITURA DE UM CLIENTE PJ: ");
+        System.out.println(seguradora.lerDados("27.456.961/0001-61", tiposArquivos.CLIENTE_PJ));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nLEITURA DE UM CONDUTOR: ");
+        System.out.println(seguradora.lerDados("940.153.620-12", tiposArquivos.CONDUTOR));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nLEITURA DE UMA FROTA: ");
+        System.out.println(seguradora.lerDados("006", tiposArquivos.FROTA));
+        System.out.println("\n------------------------------------------------\n");
+        System.out.println("\nLEITURA DE UM VEICULO: ");
+        System.out.println(seguradora.lerDados("ABC1D23", tiposArquivos.VEICULO));
 
         MenuOperacoesInterativo();
     }

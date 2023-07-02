@@ -16,7 +16,7 @@ public class ArquivoClientePJ implements I_Arquivo<ClientePJ>{
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
 
             String cliente = converterDadosParaString(clientePJ);
-            System.out.println(cliente);
+
             writer.write(cliente);
             writer.newLine();
             writer.close();

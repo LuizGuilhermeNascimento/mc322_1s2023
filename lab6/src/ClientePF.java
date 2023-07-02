@@ -15,7 +15,7 @@ public class ClientePF extends Cliente {
 
     public ClientePF(String nome , String endereco ,
             String educacao , String genero, String cpf, Date dataNascimento,
-            String telefone, String email, String sexo) {
+            String telefone, String email) {
 
         super( nome , endereco);
         if (Validacao.validarCPF(cpf)) {
@@ -29,7 +29,6 @@ public class ClientePF extends Cliente {
         this.listaVeiculos = new ArrayList<Veiculo>();
         this.telefone = telefone;
         this.email = email;
-        this.sexo = sexo;
     }
 
     // getters e setters

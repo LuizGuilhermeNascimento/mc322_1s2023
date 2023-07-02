@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.lang.StringBuilder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Seguradora {
@@ -346,21 +347,111 @@ public class Seguradora {
         return arquivoSinistro.gravarArquivo((Sinistro)o);
     }
 
-    public String lerDados(String identificador, tiposArquivos tipo) {
-        if (tipo == tiposArquivos.CLIENTE_PF) {
-            return arquivoClientePF.lerArquivo(identificador);
-        } else if (tipo == tiposArquivos.CLIENTE_PJ) {
-            return arquivoClientePJ.lerArquivo(identificador);
-        } else if (tipo == tiposArquivos.CONDUTOR) {
-            return arquivoCondutor.lerArquivo(identificador);
-        } else if (tipo == tiposArquivos.FROTA) {
-            return arquivoFrota.lerArquivo(identificador);
-        } else if (tipo == tiposArquivos.SEGURO) {
-            return arquivoSeguro.lerArquivo(identificador);
-        } else if (tipo == tiposArquivos.VEICULO) {
-            return arquivoVeiculo.lerArquivo(identificador);
+    private ClientePF gerarClientePF(String[] campos) throws Exception{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String cpf = campos[0];
+        String nome = campos[1];
+        String telefone = campos[2];
+        String endereco = campos[3];
+        String email = campos[4];
+        String sexo = campos[5];
+        String ensino = campos[6];
+        Date dataNascimento = dateFormat.parse(campos[7]);
+
+        return new ClientePF(nome, endereco, ensino, sexo, cpf, dataNascimento, telefone, email);
+    }
+
+    private ClientePJ gerarClientePJ(String[] campos) throws Exception{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String cnpj = campos[0];
+        String nome = campos[1];
+        String telefone = campos[2];
+        String endereco = campos[3];
+        String email = campos[4];
+        Date dataFundacao = dateFormat.parse(campos[5]);
+        String codeFrota = campos[6];
+
+        return new ClientePJ(nome, endereco, cnpj, dataFundacao, 0, telefone, email);
+    }
+
+    private Condutor gerarCondutor(String[] campos) throws Exception{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String cpf = campos[0];
+        String nome = campos[1];
+        String telefone = campos[2];
+        String endereco = campos[3];
+        String email = campos[4];
+        Date dataNascimento = dateFormat.parse(campos[5]);
+
+        return new Condutor(cpf, nome, telefone, endereco, email, dataNascimento);
+    }
+
+    private Frota gerarFrota(String[] campos) throws Exception{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Frota frota = new Frota();
+        for (int i = 1; i <= 3; i++) {
+            if (i == campos.length) { return frota; }
+            if (!campos[i].equals("")) {
+                frota.addVeiculo(gerarVeiculo(arquivoVeiculo.lerArquivo(campos[i]).split(",")));
+            }
         }
-        return arquivoSinistro.lerArquivo(identificador);
+        return frota;
+    }
+
+    private Veiculo gerarVeiculo(String[] campos) throws Exception{
+
+        String placa = campos[0];
+        String marca = campos[1];
+        String modelo = campos[2];
+        int anoFabricacao = Integer.parseInt(campos[3]);
+
+        return new Veiculo(placa, marca, modelo, anoFabricacao);
+    }
+
+    private Seguro gerarSeguro(String[] campos) throws Exception{
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date dataInicio = dateFormat.parse(campos[1]);
+        Date dataFim = dateFormat.parse(campos[2]);
+        double valorMensal = Double.parseDouble(campos[6]);
+        SeguroPJ seguro = new SeguroPJ(dataInicio, dataFim, this, null, null);
+        seguro.setValorMensal(valorMensal);
+
+        return seguro;
+    }
+
+    private Sinistro gerarSinistro(String[] campos) throws Exception{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date data = dateFormat.parse(campos[1]);
+        String endereco = campos[2];
+
+        return new Sinistro(data, endereco, null, null);
+    }
+
+    public String lerDados(String identificador, tiposArquivos tipo) throws Exception{
+        String objetoToString = "";
+        if (tipo == tiposArquivos.CLIENTE_PF) {
+            objetoToString = gerarClientePF(arquivoClientePF.lerArquivo(identificador).split(",")).toString();
+        } else if (tipo == tiposArquivos.CLIENTE_PJ) {
+            objetoToString = gerarClientePJ(arquivoClientePJ.lerArquivo(identificador).split(",")).toString();
+        } else if (tipo == tiposArquivos.CONDUTOR) {
+            objetoToString = gerarCondutor(arquivoCondutor.lerArquivo(identificador).split(",")).toString();
+        } else if (tipo == tiposArquivos.FROTA) {
+            objetoToString = gerarFrota(arquivoFrota.lerArquivo(identificador).split(",")).toString();
+        } else if (tipo == tiposArquivos.SEGURO) {
+            objetoToString = gerarSeguro(arquivoSeguro.lerArquivo(identificador).split(",")).toString();
+        } else if (tipo == tiposArquivos.VEICULO) {
+            objetoToString = gerarVeiculo(arquivoVeiculo.lerArquivo(identificador).split(",")).toString();
+        } else {
+            objetoToString = gerarSinistro(arquivoSinistro.lerArquivo(identificador).split(",")).toString();
+        }
+        return objetoToString;
     }
 
 }

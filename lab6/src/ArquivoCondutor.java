@@ -33,7 +33,9 @@ public class ArquivoCondutor implements I_Arquivo<Condutor>{
             while ((linha = reader.readLine()) != null) {
                 if (i >= 1) {
                     String[] campos = linha.split(",");
-                    if (campos[0].equals(cpf)) {
+                    String regex = "[^0-9]";
+
+                    if (campos[0].equals(cpf.replaceAll(regex, ""))) {
                         return linha;
                     }
                 }
